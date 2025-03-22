@@ -1,11 +1,19 @@
+/* Global Styles */
 body {
   margin: 0;
   font-family: 'Segoe UI', sans-serif;
-  background-color: #1a1d23;
-  color: #c9d1d9;
+  background-color: #2a1b56;
+  color: #e0c3fc;
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  transition: background 0.3s ease;
+}
+
+h1 {
+  color: #9b4dca;
+  font-size: 2rem;
+  transition: color 0.3s ease;
 }
 
 header {
@@ -13,33 +21,29 @@ header {
   justify-content: space-between;
   align-items: center;
   padding: 20px;
-  background-color: #161b22;
-  border-bottom: 1px solid #30363d;
-}
-
-h1 {
-  color: #4fa3fd;
-  font-size: 2rem;
+  background-color: #3e2a6c;
+  border-bottom: 2px solid #4f2b7e;
+  transition: background-color 0.3s ease;
 }
 
 .wallet {
   font-size: 1.1rem;
-  background: #238636;
+  background: #9b4dca;
   padding: 6px 12px;
   border-radius: 8px;
 }
 
 nav {
-  background-color: #161b22;
+  background-color: #3e2a6c;
   padding: 10px;
   display: flex;
   gap: 15px;
-  border-bottom: 1px solid #30363d;
+  border-bottom: 2px solid #4f2b7e;
 }
 
 nav button {
-  background: #21262d;
-  color: #c9d1d9;
+  background: #512b8b;
+  color: #e0c3fc;
   padding: 12px 24px;
   border: none;
   border-radius: 8px;
@@ -49,83 +53,115 @@ nav button {
 }
 
 nav button:hover {
-  background: #2ea043;
+  background: #7a48b7;
 }
 
 main {
   padding: 40px;
   text-align: center;
   flex: 1;
-  background-color: #21262d;
+  background-color: #3a1c52;
   border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+  animation: fadeIn 1s ease-in-out;
 }
 
 footer {
   text-align: center;
   padding: 20px;
-  background: #161b22;
-  color: #8b949e;
-  border-top: 1px solid #30363d;
+  background: #3e2a6c;
+  color: #b28dce;
+  border-top: 2px solid #4f2b7e;
 }
 
 button {
   padding: 12px 24px;
-  background-color: #238636;
+  background-color: #9b4dca;
   color: #fff;
   font-size: 1.1rem;
   border: none;
   border-radius: 10px;
   cursor: pointer;
   margin-top: 20px;
-  transition: background 0.3s ease;
+  transition: background-color 0.3s ease;
 }
 
 button:hover {
-  background-color: #2ea043;
+  background-color: #7a48b7;
 }
 
 .coinflip button {
   padding: 10px 30px;
-  background: #238636;
+  background: #9b4dca;
   color: #fff;
   font-size: 1.1rem;
   border-radius: 8px;
   cursor: pointer;
+  transition: background 0.3s ease;
 }
 
 .coinflip button:hover {
-  background: #2ea043;
+  background: #7a48b7;
 }
 
-.coin {
-  font-size: 1.2rem;
-  margin-top: 20px;
-}
-
-footer p {
-  font-size: 1rem;
-  color: #8b949e;
-}
-
-.game-area {
-  background: #2f363d;
-  padding: 30px;
-  border-radius: 10px;
-  margin-top: 20px;
-  text-align: center;
-}
-
-.game-button {
-  background-color: #238636;
-  padding: 12px 24px;
+/* Chat System Styles */
+.chat-container {
+  position: fixed;
+  right: 10px;
+  bottom: 10px;
+  width: 250px;
+  height: 400px;
+  background-color: #3a1c52;
   border-radius: 8px;
-  color: white;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
   font-size: 1rem;
-  cursor: pointer;
-  transition: background-color 0.3s;
-  margin-top: 20px;
+  z-index: 10;
 }
 
-.game-button:hover {
-  background-color: #2ea043;
+.chat-box {
+  flex: 1;
+  overflow-y: auto;
+  padding-right: 10px;
+}
+
+.chat-input {
+  padding: 10px;
+  background-color: #512b8b;
+  color: #e0c3fc;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  margin-top: 10px;
+}
+
+.chat-message {
+  padding: 8px;
+  margin: 5px 0;
+  border-radius: 8px;
+  background-color: #9b4dca;
+  color: white;
+  animation: fadeMessage 0.5s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeMessage {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
