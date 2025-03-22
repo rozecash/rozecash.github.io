@@ -29,7 +29,7 @@ import {
   onSnapshot,
   orderBy,
 } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
-import { getStorage } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-storage.js";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-storage.js";
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
@@ -54,7 +54,7 @@ function showNotification(message, type = "info") {
 
 // Update balance display
 function updateBalanceDisplay() {
-  const balanceElement = document.getElementById("balance");
+  const balanceElement = document.getElementById("profileBalance");
   if (balanceElement) {
     balanceElement.innerText = balance.toFixed(2);
   } else {
@@ -65,34 +65,25 @@ function updateBalanceDisplay() {
 // Update UI after login
 function showMainUI() {
   const authBox = document.getElementById("authBox");
-  const profileContainer = document.getElementById("profile-container");
   const usernameDisplay = document.getElementById("username");
   const logoutBtn = document.getElementById("logoutBtn");
 
-  if (authBox && profileContainer && usernameDisplay && logoutBtn) {
+  if (authBox && usernameDisplay && logoutBtn) {
     authBox.style.display = "none"; // Hide login tab
-    profileContainer.style.display = "block"; // Show profile
     usernameDisplay.innerText = user.displayName || "User"; // Update username
     logoutBtn.style.display = "block"; // Show logout button
   }
 
-  // Load user profile only if user is authenticated
-  if (user) {
-    loadUserProfile();
-  }
+  // Show home page by default
+  showPage("homePage");
 }
 
-// Update UI after logout
-function showAuthUI() {
-  const authBox = document.getElementById("authBox");
-  const profileContainer = document.getElementById("profile-container");
-  const logoutBtn = document.getElementById("logoutBtn");
-
-  if (authBox && profileContainer && logoutBtn) {
-    authBox.style.display = "block"; // Show login tab
-    profileContainer.style.display = "none"; // Hide profile
-    logoutBtn.style.display = "none"; // Hide logout button
-  }
+// Show a specific page
+function showPage(pageId) {
+  const pages = document.querySelectorAll(".page");
+  pages.forEach((page) => {
+    page.style.display = page.id === pageId ? "block" : "none";
+  });
 }
 
 // Firebase authentication functions
@@ -107,8 +98,8 @@ function register() {
     })
     .then(() => {
       showNotification("Registration successful!", "success");
-      showMainUI();
       saveUserData(username);
+      showMainUI();
     })
     .catch((error) => {
       showNotification(error.message, "error");
@@ -198,6 +189,10 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("loginBtn").addEventListener("click", login);
   document.getElementById("signUpBtn").addEventListener("click", register);
   document.getElementById("logoutBtn").addEventListener("click", logout);
+
+  // Navigation buttons
+  document.getElementById("homeBtn").addEventListener("click", () => showPage("homePage"));
+  document.getElementById("profileBtn").addEventListener("click", () => showPage("profilePage"));
 });
 
 // Update balance display on page load
