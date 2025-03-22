@@ -1,5 +1,13 @@
 // Firebase configuration object (unchanged)
-const firebaseConfig = { /* Your config */ };
+const firebaseConfig = {
+  apiKey: "AIzaSyAmJNWl_5VFaUQwjzMjBKbX6ZoLxdr5mko",
+  authDomain: "fakefreeflipdatabase.firebaseapp.com",
+  projectId: "fakefreeflipdatabase",
+  storageBucket: "fakefreeflipdatabase.firebasestorage.app",
+  messagingSenderId: "127508082386",
+  appId: "1:127508082386:web:883c2be8b481b3c6e5870b",
+  measurementId: "G-RW520XL4R4"
+};
 
 // Firebase imports
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
