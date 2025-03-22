@@ -124,6 +124,29 @@ function clickToEarn() {
   updateBalanceDisplay();
 }
 
-// Initial load
-switchGame("clicker");
-updateBalanceDisplay();
+// Chat system
+const chatInput = document.querySelector(".chat-input");
+const chatBox = document.querySelector(".chat-box");
+
+function sendMessage() {
+  const message = chatInput.value.trim();
+  if (message) {
+    const messageElement = document.createElement("div");
+    messageElement.classList.add("chat-message");
+    messageElement.innerText = message;
+    chatBox.appendChild(messageElement);
+
+    // Scroll to the bottom of chat box
+    chatBox.scrollTop = chatBox.scrollHeight;
+
+    // Clear the input field
+    chatInput.value = "";
+  }
+}
+
+// Handle message send with enter key
+chatInput.addEventListener("keydown", function(event) {
+  if (event.key === "Enter") {
+    sendMessage();
+  }
+});
