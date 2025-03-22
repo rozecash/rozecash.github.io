@@ -1,29 +1,10 @@
-// Firebase configuration object
-const firebaseConfig = {
-  apiKey: "AIzaSyAmJNWl_5VFaUQwjzMjBKbX6ZoLxdr5mko",
-  authDomain: "fakefreeflipdatabase.firebaseapp.com",
-  projectId: "fakefreeflipdatabase",
-  storageBucket: "fakefreeflipdatabase.firebasestorage.app",
-  messagingSenderId: "127508082386",
-  appId: "1:127508082386:web:883c2be8b481b3c6e5870b",
-  measurementId: "G-RW520XL4R4"
-};
+// Firebase configuration object (unchanged)
+const firebaseConfig = { /* Your config */ };
 
-// Import Firebase App and Firebase SDK services
+// Firebase imports
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
-import {
-  getAuth,
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-  signOut,
-  onAuthStateChanged,
-} from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
-import {
-  getFirestore,
-  doc,
-  setDoc,
-  getDoc,
-} from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
+import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
 import { getStorage } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-storage.js";
 
 // Initialize Firebase
@@ -46,56 +27,18 @@ function updateBalanceDisplay() {
   }
 }
 
-// Switch between different game modes
-function switchGame(game) {
-  const gameArea = document.getElementById("gameArea");
-  if (!gameArea) {
-    console.error("Game area not found");
-    return;
-  }
+// Show notifications
+function showNotification(message) {
+  const notificationContainer = document.getElementById("notification-container");
+  const notification = document.createElement("div");
+  notification.classList.add("notification");
+  notification.innerText = message;
+  notificationContainer.appendChild(notification);
 
-  gameArea.innerHTML = "";
-
-  if (game === "coinflip") {
-    gameArea.innerHTML = `
-      <h2>🪙 Coinflip</h2>
-      <p>Select a side and flip the coin!</p>
-      <button id="coinflipBtn">Flip Coin</button>
-    `;
-    document.getElementById("coinflipBtn").addEventListener("click", coinflip);
-  } else if (game === "slots") {
-    gameArea.innerHTML = `
-      <h2>🎰 Slots</h2>
-      <p>Spin to win!</p>
-      <button id="spinSlotsBtn">Spin</button>
-    `;
-    document.getElementById("spinSlotsBtn").addEventListener("click", spinSlots);
-  } else if (game === "lottery") {
-    gameArea.innerHTML = `
-      <h2>🎟️ Lottery</h2>
-      <p>Buy tickets and win big!</p>
-      <button id="buyLotteryBtn">Buy Ticket</button>
-    `;
-    document.getElementById("buyLotteryBtn").addEventListener("click", buyLottery);
-  } else if (game === "rewards") {
-    gameArea.innerHTML = `
-      <h2>🎁 Rewards</h2>
-      <button id="claimRewardBtn">Claim 10 Coins</button>
-    `;
-    document.getElementById("claimRewardBtn").addEventListener("click", claimReward);
-  } else if (game === "chat") {
-    gameArea.innerHTML = `
-      <div class="chat-box" id="chatBox">
-        <div id="chatMessages"></div>
-        <div class="chat-input">
-          <input id="chatInput" type="text" placeholder="Type a message..." />
-          <button id="sendMessageBtn">Send</button>
-        </div>
-      </div>
-    `;
-    document.getElementById("sendMessageBtn").addEventListener("click", sendMessage);
-    loadChat();
-  }
+  setTimeout(() => {
+    notification.classList.add("fade-out");
+    setTimeout(() => notification.remove(), 500); // Remove after fade-out
+  }, 3000);
 }
 
 // Firebase authentication functions
@@ -108,6 +51,7 @@ function register() {
       user = userCredential.user;
       showMainUI();
       saveUserData(username);
+      showNotification("Registration successful!");
     })
     .catch((error) => {
       alert(error.message);
@@ -122,6 +66,7 @@ function login() {
     .then((userCredential) => {
       user = userCredential.user;
       showMainUI();
+      showNotification("Login successful!");
     })
     .catch((error) => {
       alert(error.message);
@@ -133,6 +78,7 @@ function logout() {
     .then(() => {
       user = null;
       showAuthUI();
+      showNotification("Logged out successfully!");
     })
     .catch((error) => {
       alert(error.message);
@@ -150,30 +96,22 @@ onAuthStateChanged(auth, (userCredential) => {
 });
 
 function showMainUI() {
-  const authContainer = document.getElementById("authContainer");
-  const mainUI = document.getElementById("mainUI");
-  if (authContainer && mainUI) {
-    authContainer.style.display = "none";
-    mainUI.style.display = "block";
-  }
+  const authContainer = document.getElementById("auth-container");
+  const profileContainer = document.getElementById("profile-container");
 
-  if (user && user.displayName) {
-    document.getElementById("userName").innerText = user.displayName;
-  } else {
-    document.getElementById("userName").innerText = "User"; // Set a default name if displayName is not available
-  }
+  authContainer.style.display = "none";
+  profileContainer.style.display = "block";
 
+  document.getElementById("username-display").innerText = user.displayName || "User";
   loadUserProfile();
 }
-
 
 function showAuthUI() {
   const authContainer = document.getElementById("auth-container");
   const profileContainer = document.getElementById("profile-container");
-  if (authContainer && profileContainer) {
-    authContainer.style.display = "block";
-    profileContainer.style.display = "none";
-  }
+
+  authContainer.style.display = "block";
+  profileContainer.style.display = "none";
 }
 
 // Save user data to Firestore
@@ -211,40 +149,7 @@ function loadUserProfile() {
 function claimReward() {
   balance += 10;
   updateBalanceDisplay();
-}
-
-function coinflip() {
-  const flipResult = Math.random() > 0.5 ? "Heads" : "Tails";
-  alert(`You flipped: ${flipResult}`);
-}
-
-function spinSlots() {
-  const slotResult = Math.floor(Math.random() * 7) + 1;
-  alert(`You spun: ${slotResult}`);
-}
-
-function buyLottery() {
-  alert("Lottery ticket purchased! Good luck!");
-}
-
-// Chat functions
-function sendMessage() {
-  const message = document.getElementById("chatInput").value;
-  if (message.trim() === "") return;
-  db.collection("chat").add({ message, timestamp: Date.now() });
-  document.getElementById("chatInput").value = "";
-}
-
-function loadChat() {
-  const chatMessages = document.getElementById("chatMessages");
-  db.collection("chat")
-    .orderBy("timestamp")
-    .onSnapshot((snapshot) => {
-      chatMessages.innerHTML = "";
-      snapshot.forEach((doc) => {
-        chatMessages.innerHTML += `<p>${doc.data().message}</p>`;
-      });
-    });
+  showNotification("You claimed 10 coins!");
 }
 
 // Event listeners for buttons
