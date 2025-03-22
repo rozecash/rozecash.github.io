@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>FreeFlipFake</title>
   <link rel="stylesheet" href="style.css" />
-  <!-- Your custom script to handle UI and Firebase interactions -->
   <script type="module" src="script.js"></script>
 </head>
 <body>
@@ -15,12 +14,8 @@
     <!-- Login/Registration Form -->
     <div id="auth-container">
       <h2>Login/Register</h2>
-      <div>
-        <input type="text" id="username" placeholder="Enter username" />
-      </div>
-      <div>
-        <input type="password" id="password" placeholder="Enter password" />
-      </div>
+      <input type="text" id="username" placeholder="Enter username" />
+      <input type="password" id="password" placeholder="Enter password" />
       <button id="login-btn">Login</button>
       <button id="register-btn">Register</button>
     </div>
@@ -28,12 +23,14 @@
     <!-- Profile Information (when user is logged in) -->
     <div id="profile-container" style="display: none;">
       <h2>Profile</h2>
-      <div>
-        <img id="profile-picture" src="" alt="Profile Picture" />
-        <p id="username-display">Username: </p>
-        <button id="logout-btn">Logout</button>
-      </div>
+      <img id="profile-picture" src="" alt="Profile Picture" />
+      <p id="username-display">Username: </p>
+      <p>Balance: <span id="balance">0.00</span> Coins</p>
+      <button id="logout-btn">Logout</button>
     </div>
+
+    <!-- Notification container -->
+    <div id="notification-container"></div>
   </div>
 
   <!-- Footer -->
