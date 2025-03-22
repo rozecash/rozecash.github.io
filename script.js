@@ -1,48 +1,41 @@
-let balance = 1000;
-let rewardClaimed = false;
+let balance = 0;
 
-function updateBalance() {
-  document.getElementById("balanceAmount").innerText = balance;
-}
-
-function clickToEarn() {
-  balance += 50;
-  updateBalance();
-}
-
-function playSlots() {
-  if (balance < 100) {
-    alert("Not enough balance!");
-    return;
-  }
-
-  balance -= 100;
-  const win = Math.random() > 0.7;
-  if (win) {
-    const prize = 500;
-    balance += prize;
-    document.getElementById("slotResult").innerText = `🎉 You won $${prize}!`;
-  } else {
-    document.getElementById("slotResult").innerText = `😢 You lost...`;
-  }
-
-  updateBalance();
-}
-
-function claimReward() {
-  if (rewardClaimed) {
-    document.getElementById("rewardStatus").innerText = "✅ Already claimed!";
-    return;
-  }
-
-  balance += 500;
-  rewardClaimed = true;
-  updateBalance();
-  document.getElementById("rewardStatus").innerText = "🎁 Reward claimed!";
+function updateBalanceDisplay() {
+  document.getElementById("balance").innerText = balance.toFixed(2);
 }
 
 function switchGame(game) {
-  const allGames = document.querySelectorAll(".game-card");
-  allGames.forEach(g => g.style.display = "none");
-  document.getElementById(game + "Game").style.display = "block";
+  const gameArea = document.getElementById("gameArea");
+  gameArea.innerHTML = "";
+
+  if (game === "clicker") {
+    gameArea.innerHTML = `
+      <h2>🖱️ Click to Earn</h2>
+      <button onclick="clickToEarn()">Click Me</button>
+    `;
+  } else if (game === "slots") {
+    gameArea.innerHTML = `
+      <h2>🎰 Slots (Coming Soon)</h2>
+      <p>Spin the slots to (maybe) win!</p>
+    `;
+  } else if (game === "reward") {
+    gameArea.innerHTML = `
+      <h2>🎁 Daily Reward</h2>
+      <button onclick="claimReward()">Claim 10 Coins</button>
+    `;
+  }
 }
+
+function clickToEarn() {
+  balance += 0.25;
+  updateBalanceDisplay();
+}
+
+function claimReward() {
+  balance += 10;
+  updateBalanceDisplay();
+}
+
+// Initial load
+switchGame("clicker");
+updateBalanceDisplay();
