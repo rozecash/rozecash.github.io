@@ -1,183 +1,209 @@
-/* General Styling */
+/* Reset some default browser styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+/* Body Style */
 body {
-  font-family: 'Roboto', sans-serif;
-  background-color: #1E1E3F;
-  color: #E4E4E4;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  overflow: hidden;
+    background-color: #1c1c3c;
+    color: white;
+    font-family: 'Roboto', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
 }
 
-/* Main Container */
-.container {
-  width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+/* Glowing Button Style */
+button {
+    background: linear-gradient(45deg, #7c4dff, #9c27b0);
+    border: none;
+    border-radius: 8px;
+    padding: 12px 24px;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    outline: none;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0 0 10px rgba(255, 0, 255, 0.7), 0 0 20px rgba(255, 0, 255, 0.5);
 }
 
-/* Auth UI */
-#auth-container {
-  background: linear-gradient(135deg, #6A67CE, #5D3FD3);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 30px;
-  border-radius: 12px;
-  box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.3);
-  transition: all 0.3s ease;
+button:hover {
+    background: linear-gradient(45deg, #9c27b0, #7c4dff);
+    box-shadow: 0 0 30px rgba(255, 0, 255, 1), 0 0 40px rgba(255, 0, 255, 0.7);
 }
 
-#auth-container input {
-  margin: 10px 0;
-  padding: 15px;
-  width: 100%;
-  max-width: 300px;
-  border-radius: 8px;
-  border: 2px solid #4E44C3;
-  font-size: 16px;
-  background-color: #2E1F6C;
-  color: #fff;
+/* Auth Form and Profile Section */
+#authForm, #profileSection, #admin-panel {
+    background-color: rgba(0, 0, 0, 0.7);
+    border-radius: 10px;
+    padding: 20px;
+    margin: 10px;
+    width: 300px;
+    text-align: center;
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
 }
 
-#auth-container button {
-  padding: 15px 30px;
-  margin-top: 15px;
-  background-color: #FFD700;
-  border: none;
-  border-radius: 8px;
-  color: #2F2F2F;
-  font-size: 18px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-#auth-container button:hover {
-  background-color: #E6B800;
-}
-
-/* Profile UI */
-#profile-container {
-  display: none;
-  background: linear-gradient(135deg, #6A67CE, #5D3FD3);
-  padding: 30px;
-  border-radius: 12px;
-  box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.3);
-  text-align: center;
-}
-
-#profile-container #username-display {
-  font-size: 24px;
-  font-weight: bold;
-  color: #FFF;
-}
-
-#profile-container #balance {
-  font-size: 32px;
-  font-weight: bold;
-  margin-top: 15px;
-  color: #FFD700;
-}
-
-#profile-container button {
-  padding: 15px 30px;
-  background-color: #FF6347;
-  border: none;
-  border-radius: 8px;
-  color: #fff;
-  font-size: 18px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-#profile-container button:hover {
-  background-color: #E5533F;
-}
-
-/* Notifications */
-#notification-container {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  z-index: 1000;
-}
-
-.notification {
-  background-color: #28a745;
-  color: #fff;
-  padding: 15px;
-  margin: 5px;
-  border-radius: 8px;
-  font-size: 16px;
-  transition: opacity 0.5s ease-out;
-}
-
-.notification.fade-out {
-  opacity: 0;
-}
-
-/* Hover Effects */
-button:hover, #auth-container input:focus {
-  transform: scale(1.05);
-  transition: transform 0.2s ease;
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-  .container {
-    padding: 15px;
-  }
-
-  #auth-container, #profile-container {
-    width: 90%;
-  }
-
-  #auth-container input {
+input[type="email"], input[type="password"], input[type="file"] {
+    background-color: #333;
+    color: white;
+    border: 1px solid #444;
+    border-radius: 8px;
+    padding: 12px;
+    margin: 10px 0;
     width: 100%;
-  }
-
-  #profile-container #balance {
-    font-size: 28px;
-  }
+    outline: none;
+    box-shadow: 0 0 5px rgba(255, 0, 255, 0.3);
 }
 
-/* Profile Picture Upload */
-#profile-picture-container {
-  margin-bottom: 20px;
+input[type="email"]:focus, input[type="password"]:focus {
+    border-color: #7c4dff;
+    box-shadow: 0 0 10px rgba(255, 0, 255, 0.6);
 }
 
-#profile-picture-container img {
-  width: 120px;
-  height: 120px;
-  border-radius: 50%;
-  object-fit: cover;
+/* Header and Links */
+#header {
+    background-color: #1a1a2e;
+    padding: 20px;
+    text-align: center;
+    width: 100%;
+    color: white;
 }
 
-#profile-picture-container input[type="file"] {
-  display: none;
+a {
+    color: #9c27b0;
+    text-decoration: none;
+    transition: all 0.3s ease;
 }
 
-#upload-picture-btn {
-  padding: 10px 20px;
-  background-color: #6A67CE;
-  border: none;
-  border-radius: 5px;
-  color: #fff;
-  cursor: pointer;
-  font-size: 16px;
-  margin-top: 10px;
-  transition: background-color 0.3s ease;
+a:hover {
+    color: #7c4dff;
 }
 
-#upload-picture-btn:hover {
-  background-color: #4E44C3;
+/* Profile Section */
+#profileSection {
+    display: none;
+    background-color: rgba(0, 0, 0, 0.9);
+    border-radius: 10px;
+    padding: 30px;
+    width: 300px;
+    text-align: center;
+}
+
+#profile-pic {
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    margin-bottom: 15px;
+    border: 2px solid #7c4dff;
+    box-shadow: 0 0 10px rgba(255, 0, 255, 0.7);
+}
+
+#username {
+    font-size: 18px;
+    margin-bottom: 15px;
+    font-weight: bold;
+    text-transform: capitalize;
+}
+
+/* Admin Panel */
+#admin-panel {
+    display: none;
+    background-color: rgba(0, 0, 0, 0.8);
+    padding: 20px;
+    border-radius: 10px;
+    width: 300px;
+    text-align: center;
+}
+
+#admin-panel input {
+    background-color: #333;
+    color: white;
+    border: 1px solid #444;
+    border-radius: 8px;
+    padding: 12px;
+    margin: 10px 0;
+    width: 100%;
+    outline: none;
+    box-shadow: 0 0 5px rgba(255, 0, 255, 0.3);
+}
+
+#admin-panel button {
+    background-color: #7c4dff;
+    color: white;
+    padding: 12px;
+    border-radius: 8px;
+    width: 100%;
+    cursor: pointer;
+}
+
+#admin-panel button:hover {
+    background-color: #9c27b0;
+}
+
+/* Dark Theme for the page */
+.dark-theme {
+    background-color: #1c1c3c;
+    color: white;
+}
+
+/* Glow Effects */
+.glow {
+    text-shadow: 0 0 10px rgba(255, 0, 255, 0.7), 0 0 20px rgba(255, 0, 255, 0.5);
+}
+
+/* Balance Section */
+#balance {
+    font-size: 20px;
+    margin-top: 20px;
+    font-weight: bold;
+}
+
+#balance span {
+    color: #9c27b0;
+    font-size: 24px;
+}
+
+/* Hover Effect for Admin Panel */
+#admin-panel input:focus, #admin-panel button:focus {
+    outline: none;
+    border: 1px solid #7c4dff;
+    box-shadow: 0 0 10px rgba(255, 0, 255, 0.6);
+}
+
+/* Dark Navigation Bar */
+#navBar {
+    background-color: #1a1a2e;
+    padding: 15px;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 100;
+}
+
+#navBar a {
+    color: white;
+    margin: 0 15px;
+    font-size: 18px;
+}
+
+#navBar a:hover {
+    color: #9c27b0;
+}
+
+/* Glow Animation */
+@keyframes glowing {
+    0% { box-shadow: 0 0 5px #ff00ff, 0 0 10px #ff00ff, 0 0 15px #ff00ff; }
+    50% { box-shadow: 0 0 10px #ff00ff, 0 0 20px #ff00ff, 0 0 30px #ff00ff; }
+    100% { box-shadow: 0 0 5px #ff00ff, 0 0 10px #ff00ff, 0 0 15px #ff00ff; }
+}
+
+.glowing-effect {
+    animation: glowing 1.5s infinite;
 }
