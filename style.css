@@ -1,99 +1,53 @@
 body {
   margin: 0;
   font-family: 'Segoe UI', sans-serif;
-  background: #0f111a;
-  color: white;
-  display: flex;
-  height: 100vh;
-  overflow: hidden;
+  background-color: #0d1117;
+  color: #c9d1d9;
 }
 
-.sidebar {
-  background: #14151f;
-  width: 220px;
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-
-.sidebar h2 {
-  color: #8f59ff;
-  font-size: 24px;
-  margin-bottom: 30px;
-}
-
-.sidebar nav button,
-.bottom-links button {
-  background: none;
-  border: none;
-  color: #ccc;
-  padding: 15px 0;
-  font-size: 16px;
-  text-align: left;
-  width: 100%;
-  cursor: pointer;
-}
-
-.sidebar button:hover {
-  color: white;
-}
-
-.main {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  background: #0f111a;
-  overflow: hidden;
-}
-
-.topbar {
+header {
   display: flex;
   justify-content: space-between;
-  padding: 20px 40px;
-  background: #1a1c29;
   align-items: center;
+  padding: 20px;
+  background-color: #161b22;
+  border-bottom: 1px solid #30363d;
 }
 
 .wallet {
-  font-size: 18px;
+  font-size: 1.1rem;
+  background: #238636;
+  padding: 6px 12px;
+  border-radius: 8px;
 }
 
-.wallet-button {
-  background: #8f59ff;
-  color: white;
+nav {
+  background-color: #161b22;
+  padding: 10px;
+  display: flex;
+  gap: 15px;
+  border-bottom: 1px solid #30363d;
+}
+
+nav button {
+  background: #21262d;
+  color: #c9d1d9;
+  padding: 10px 20px;
   border: none;
-  padding: 10px 16px;
   border-radius: 8px;
   cursor: pointer;
+  font-size: 1rem;
 }
 
-.game-container {
+main {
   padding: 40px;
-  overflow-y: auto;
-}
-
-.game-card {
-  background: #1a1c29;
-  border-radius: 12px;
-  padding: 30px;
-  max-width: 500px;
-  margin: auto;
   text-align: center;
-  margin-bottom: 30px;
 }
 
-button {
-  background: #00b386;
-  color: white;
-  padding: 12px 20px;
-  border: none;
-  border-radius: 8px;
-  margin-top: 20px;
-  cursor: pointer;
-  font-size: 16px;
-}
-
-button:hover {
-  background: #00d9a0;
+footer {
+  text-align: center;
+  padding: 20px;
+  background: #161b22;
+  color: #8b949e;
+  border-top: 1px solid #30363d;
 }
