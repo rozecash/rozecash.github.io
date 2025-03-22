@@ -171,6 +171,30 @@ footer {
   border-top: 1px solid #2b2f4a;
 }
 
+/* Notification styles */
+#notification {
+  display: none;
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  padding: 10px 20px;
+  border-radius: 5px;
+  color: white;
+  z-index: 1000;
+}
+
+.notification.info {
+  background-color: #6c63ff;
+}
+
+.notification.success {
+  background-color: #4caf50;
+}
+
+.notification.error {
+  background-color: #f44336;
+}
+
 /* Animations */
 @keyframes fadeIn {
   from {
