@@ -3,7 +3,7 @@ const firebaseConfig = {
   apiKey: "AIzaSyAmJNWl_5VFaUQwjzMjBKbX6ZoLxdr5mko",
   authDomain: "fakefreeflipdatabase.firebaseapp.com",
   projectId: "fakefreeflipdatabase",
-  storageBucket: "fakefreeflipdatabase.firebasestorage.app",
+  storageBucket: "fakefreeflipdatabase.appspot.com",
   messagingSenderId: "127508082386",
   appId: "1:127508082386:web:883c2be8b481b3c6e5870b",
   measurementId: "G-RW520XL4R4"
@@ -23,6 +23,10 @@ import {
   doc,
   setDoc,
   getDoc,
+  collection,
+  addDoc,
+  onSnapshot,
+  orderBy,
 } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
 import { getStorage } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-storage.js";
 
@@ -100,8 +104,8 @@ function switchGame(game) {
 
 // Firebase authentication functions
 function register() {
-  const username = document.getElementById("username").value;
-  const password = document.getElementById("password").value;
+  const username = document.getElementById("usernameInput").value;
+  const password = document.getElementById("passwordInput").value;
 
   createUserWithEmailAndPassword(auth, username + "@fake.com", password)
     .then((userCredential) => {
@@ -115,8 +119,8 @@ function register() {
 }
 
 function login() {
-  const username = document.getElementById("username").value;
-  const password = document.getElementById("password").value;
+  const username = document.getElementById("usernameInput").value;
+  const password = document.getElementById("passwordInput").value;
 
   signInWithEmailAndPassword(auth, username + "@fake.com", password)
     .then((userCredential) => {
@@ -150,21 +154,21 @@ onAuthStateChanged(auth, (userCredential) => {
 });
 
 function showMainUI() {
-  const authContainer = document.getElementById("auth-container");
+  const authBox = document.getElementById("authBox");
   const profileContainer = document.getElementById("profile-container");
-  if (authContainer && profileContainer) {
-    authContainer.style.display = "none";
+  if (authBox && profileContainer) {
+    authBox.style.display = "none";
     profileContainer.style.display = "block";
   }
-  document.getElementById("username-display").innerText = "Username: " + (user.displayName || "User");
+  document.getElementById("username").innerText = "Username: " + (user.displayName || "User");
   loadUserProfile();
 }
 
 function showAuthUI() {
-  const authContainer = document.getElementById("auth-container");
+  const authBox = document.getElementById("authBox");
   const profileContainer = document.getElementById("profile-container");
-  if (authContainer && profileContainer) {
-    authContainer.style.display = "block";
+  if (authBox && profileContainer) {
+    authBox.style.display = "block";
     profileContainer.style.display = "none";
   }
 }
@@ -224,26 +228,26 @@ function buyLottery() {
 function sendMessage() {
   const message = document.getElementById("chatInput").value;
   if (message.trim() === "") return;
-  db.collection("chat").add({ message, timestamp: Date.now() });
+  addDoc(collection(db, "chat"), { message, timestamp: Date.now() });
   document.getElementById("chatInput").value = "";
 }
 
 function loadChat() {
   const chatMessages = document.getElementById("chatMessages");
-  db.collection("chat")
-    .orderBy("timestamp")
-    .onSnapshot((snapshot) => {
-      chatMessages.innerHTML = "";
-      snapshot.forEach((doc) => {
-        chatMessages.innerHTML += `<p>${doc.data().message}</p>`;
-      });
+  onSnapshot(collection(db, "chat"), orderBy("timestamp"), (snapshot) => {
+    chatMessages.innerHTML = "";
+    snapshot.forEach((doc) => {
+      chatMessages.innerHTML += `<p>${doc.data().message}</p>`;
     });
+  });
 }
 
 // Event listeners for buttons
-document.getElementById("login-btn").addEventListener("click", login);
-document.getElementById("register-btn").addEventListener("click", register);
-document.getElementById("logout-btn").addEventListener("click", logout);
+document.addEventListener("DOMContentLoaded", () => {
+  document.getElementById("loginBtn").addEventListener("click", login);
+  document.getElementById("signUpBtn").addEventListener("click", register);
+  document.getElementById("logoutBtn").addEventListener("click", logout);
+});
 
 // Update balance display on page load
 updateBalanceDisplay();
