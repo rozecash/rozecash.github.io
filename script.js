@@ -1,4 +1,3 @@
-// script.js
 let balance = 1000;
 let rewardClaimed = false;
 
@@ -43,8 +42,7 @@ function claimReward() {
 }
 
 function switchGame(game) {
-  const allGames = document.querySelectorAll(".game");
+  const allGames = document.querySelectorAll(".game-card");
   allGames.forEach(g => g.style.display = "none");
-
   document.getElementById(game + "Game").style.display = "block";
 }
