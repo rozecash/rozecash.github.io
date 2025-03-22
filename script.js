@@ -1,21 +1,4 @@
-// script.js
-import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
-import { 
-  getAuth, 
-  createUserWithEmailAndPassword, 
-  signInWithEmailAndPassword, 
-  signOut, 
-  onAuthStateChanged 
-} from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
-import { 
-  getFirestore, 
-  doc, 
-  setDoc, 
-  getDoc 
-} from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
-import { getStorage } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-storage.js";
-
-// Firebase configuration
+// Firebase configuration object
 const firebaseConfig = {
   apiKey: "AIzaSyAmJNWl_5VFaUQwjzMjBKbX6ZoLxdr5mko",
   authDomain: "fakefreeflipdatabase.firebaseapp.com",
@@ -25,6 +8,23 @@ const firebaseConfig = {
   appId: "1:127508082386:web:883c2be8b481b3c6e5870b",
   measurementId: "G-RW520XL4R4"
 };
+
+// Import Firebase App and Firebase SDK services
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  signOut,
+  onAuthStateChanged,
+} from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
+import {
+  getFirestore,
+  doc,
+  setDoc,
+  getDoc,
+} from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
+import { getStorage } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-storage.js";
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
@@ -49,49 +49,59 @@ function updateBalanceDisplay() {
 // Switch between different game modes
 function switchGame(game) {
   const gameArea = document.getElementById("gameArea");
+  if (!gameArea) {
+    console.error("Game area not found");
+    return;
+  }
+
   gameArea.innerHTML = "";
 
   if (game === "coinflip") {
     gameArea.innerHTML = `
       <h2>🪙 Coinflip</h2>
       <p>Select a side and flip the coin!</p>
-      <button onclick="coinflip()">Flip Coin</button>
+      <button id="coinflipBtn">Flip Coin</button>
     `;
+    document.getElementById("coinflipBtn").addEventListener("click", coinflip);
   } else if (game === "slots") {
     gameArea.innerHTML = `
       <h2>🎰 Slots</h2>
       <p>Spin to win!</p>
-      <button onclick="spinSlots()">Spin</button>
+      <button id="spinSlotsBtn">Spin</button>
     `;
+    document.getElementById("spinSlotsBtn").addEventListener("click", spinSlots);
   } else if (game === "lottery") {
     gameArea.innerHTML = `
       <h2>🎟️ Lottery</h2>
       <p>Buy tickets and win big!</p>
-      <button onclick="buyLottery()">Buy Ticket</button>
+      <button id="buyLotteryBtn">Buy Ticket</button>
     `;
+    document.getElementById("buyLotteryBtn").addEventListener("click", buyLottery);
   } else if (game === "rewards") {
     gameArea.innerHTML = `
       <h2>🎁 Rewards</h2>
-      <button onclick="claimReward()">Claim 10 Coins</button>
+      <button id="claimRewardBtn">Claim 10 Coins</button>
     `;
+    document.getElementById("claimRewardBtn").addEventListener("click", claimReward);
   } else if (game === "chat") {
     gameArea.innerHTML = `
       <div class="chat-box" id="chatBox">
         <div id="chatMessages"></div>
         <div class="chat-input">
           <input id="chatInput" type="text" placeholder="Type a message..." />
-          <button onclick="sendMessage()">Send</button>
+          <button id="sendMessageBtn">Send</button>
         </div>
       </div>
     `;
+    document.getElementById("sendMessageBtn").addEventListener("click", sendMessage);
     loadChat();
   }
 }
 
 // Firebase authentication functions
 function register() {
-  const username = document.getElementById("usernameInput").value;
-  const password = document.getElementById("passwordInput").value;
+  const username = document.getElementById("username").value;
+  const password = document.getElementById("password").value;
 
   createUserWithEmailAndPassword(auth, username + "@fake.com", password)
     .then((userCredential) => {
@@ -105,8 +115,8 @@ function register() {
 }
 
 function login() {
-  const username = document.getElementById("usernameInput").value;
-  const password = document.getElementById("passwordInput").value;
+  const username = document.getElementById("username").value;
+  const password = document.getElementById("password").value;
 
   signInWithEmailAndPassword(auth, username + "@fake.com", password)
     .then((userCredential) => {
@@ -140,22 +150,22 @@ onAuthStateChanged(auth, (userCredential) => {
 });
 
 function showMainUI() {
-  const authContainer = document.getElementById("authContainer");
-  const mainUI = document.getElementById("mainUI");
-  if (authContainer && mainUI) {
+  const authContainer = document.getElementById("auth-container");
+  const profileContainer = document.getElementById("profile-container");
+  if (authContainer && profileContainer) {
     authContainer.style.display = "none";
-    mainUI.style.display = "block";
+    profileContainer.style.display = "block";
   }
-  document.getElementById("userName").innerText = user.displayName || "User";
+  document.getElementById("username-display").innerText = "Username: " + (user.displayName || "User");
   loadUserProfile();
 }
 
 function showAuthUI() {
-  const authContainer = document.getElementById("authContainer");
-  const mainUI = document.getElementById("mainUI");
-  if (authContainer && mainUI) {
+  const authContainer = document.getElementById("auth-container");
+  const profileContainer = document.getElementById("profile-container");
+  if (authContainer && profileContainer) {
     authContainer.style.display = "block";
-    mainUI.style.display = "none";
+    profileContainer.style.display = "none";
   }
 }
 
@@ -164,7 +174,7 @@ function saveUserData(username) {
   setDoc(doc(db, "users", user.uid), {
     username: username,
     balance: 0,
-    profilePicture: null
+    profilePicture: null,
   })
     .then(() => {
       updateBalanceDisplay();
@@ -229,6 +239,11 @@ function loadChat() {
       });
     });
 }
+
+// Event listeners for buttons
+document.getElementById("login-btn").addEventListener("click", login);
+document.getElementById("register-btn").addEventListener("click", register);
+document.getElementById("logout-btn").addEventListener("click", logout);
 
 // Update balance display on page load
 updateBalanceDisplay();
