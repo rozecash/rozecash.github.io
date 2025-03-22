@@ -28,6 +28,7 @@ import {
   addDoc,
   onSnapshot,
   orderBy,
+  query,
 } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-storage.js";
 
@@ -197,6 +198,54 @@ function loadUserProfile() {
     });
 }
 
+// Load chat messages
+function loadChat() {
+  const chatMessages = document.getElementById("chatMessages");
+  const chatRef = collection(db, "chat");
+
+  // Listen for new messages
+  onSnapshot(query(chatRef, orderBy("timestamp", "desc")), (snapshot) => {
+    chatMessages.innerHTML = ""; // Clear existing messages
+
+    // Limit to 50 messages
+    const messages = snapshot.docs.slice(0, 50);
+
+    // Display messages in reverse order (latest at the bottom)
+    messages.reverse().forEach((doc) => {
+      const data = doc.data();
+      const messageElement = document.createElement("p");
+      messageElement.innerHTML = `<strong>${data.username}:</strong> ${data.message}`;
+      chatMessages.appendChild(messageElement);
+    });
+
+    // Automatically scroll to the bottom of the chat
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+  });
+}
+
+// Send chat message
+function sendMessage() {
+  const message = document.getElementById("chatInput").value;
+  if (message.trim() === "") return;
+
+  if (!user) {
+    showNotification("You must be logged in to send messages.", "error");
+    return;
+  }
+
+  addDoc(collection(db, "chat"), {
+    message: message,
+    timestamp: Date.now(),
+    username: user.displayName || "Anonymous",
+  })
+    .then(() => {
+      document.getElementById("chatInput").value = "";
+    })
+    .catch((error) => {
+      showNotification("Error sending message: " + error.message, "error");
+    });
+}
+
 // Event listeners for buttons
 document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("loginBtn")?.addEventListener("click", login);
@@ -232,28 +281,11 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // Chat functionality
-  document.getElementById("sendMessageButton")?.addEventListener("click", () => {
-    const message = document.getElementById("chatInput").value;
-    if (message.trim() === "") return;
-
-    if (!user) {
-      showNotification("You must be logged in to send messages.", "error");
-      return;
-    }
-
-    addDoc(collection(db, "chat"), {
-      message: message,
-      timestamp: Date.now(),
-      username: user.displayName || "Anonymous",
-    })
-      .then(() => {
-        document.getElementById("chatInput").value = "";
-      })
-      .catch((error) => {
-        showNotification("Error sending message: " + error.message, "error");
-      });
-  });
+  document.getElementById("sendMessageButton")?.addEventListener("click", sendMessage);
 });
+
+// Load chat when the page loads
+loadChat();
 
 // Update balance display on page load
 updateBalanceDisplay();
