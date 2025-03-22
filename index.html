@@ -3,40 +3,65 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>FreeFlipFake - Gambling</title>
+  <title>FreeFlipFake</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <!-- Header Section -->
+  <!-- Authentication Section -->
+  <div id="auth-container">
+    <button onclick="showLogin()">Login</button>
+    <button onclick="showRegister()">Register</button>
+  </div>
+
+  <!-- Login Form -->
+  <div id="login-container" style="display:none;">
+    <h2>Login</h2>
+    <input type="email" id="login-email" placeholder="Email" />
+    <input type="password" id="login-password" placeholder="Password" />
+    <button onclick="loginUser()">Login</button>
+    <button onclick="toggleAuthForm()">Don't have an account? Register</button>
+  </div>
+
+  <!-- Register Form -->
+  <div id="register-container" style="display:none;">
+    <h2>Register</h2>
+    <input type="email" id="register-email" placeholder="Email" />
+    <input type="password" id="register-password" placeholder="Password" />
+    <button onclick="registerUser()">Register</button>
+    <button onclick="toggleAuthForm()">Already have an account? Login</button>
+  </div>
+
+  <!-- Main UI Section -->
   <header>
     <h1>🎰 FreeFlipFake</h1>
-    <div class="wallet">Balance: <span id="balance">100</span> 🪙</div>
+    <div class="wallet">Balance: <span id="balance">0</span> 🪙</div>
   </header>
 
-  <!-- Navigation Section -->
   <nav>
     <button onclick="switchGame('clicker')">🖱️ Clicker</button>
     <button onclick="switchGame('slots')">🎰 Slots</button>
+    <button onclick="switchGame('lottery')">🎱 Lottery</button>
     <button onclick="switchGame('coinflip')">🪙 Coinflip</button>
-    <button onclick="switchGame('lottery')">🎲 Lottery</button>
   </nav>
 
-  <!-- Main Content Section -->
   <main id="gameArea">
-    <!-- Default game loaded here -->
+    <!-- Game content will load here -->
   </main>
 
-  <!-- Chat Section -->
-  <div class="chat-container">
-    <div class="chat-box" id="chatBox"></div>
-    <input class="chat-input" id="chatInput" type="text" placeholder="Chat here..." />
-  </div>
+  <section id="chat">
+    <h2>Global Chat</h2>
+    <div id="chatBox"></div>
+    <input type="text" id="chatInput" placeholder="Type a message..." />
+    <button onclick="sendMessage()">Send</button>
+  </section>
 
-  <!-- Footer Section -->
   <footer>
     <p>&copy; 2025 FreeFlipFake. Not a real gambling site.</p>
   </footer>
 
+  <script src="https://www.gstatic.com/firebasejs/9.4.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.4.0/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.4.0/firebase-firestore.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
