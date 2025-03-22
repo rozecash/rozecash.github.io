@@ -20,11 +20,28 @@
     </header>
 
     <main>
-        <div id="gameArea">
-            <!-- Game Area (Content dynamically added via script.js) -->
+        <div id="homePage" class="page">
+            <h1>Welcome to the Home Page</h1>
+            <p>Select a game or navigate to your profile.</p>
         </div>
+
+        <div id="profilePage" class="page" style="display: none;">
+            <h1>Your Profile</h1>
+            <p>Username: <span id="profileUsername"></span></p>
+            <p>Balance: <span id="profileBalance">0.00</span></p>
+            <input type="file" id="pfpUpload" accept="image/*" />
+            <button id="updatePfpBtn">Update Profile Picture</button>
+        </div>
+
+        <div id="gamesPage" class="page" style="display: none;">
+            <h1>Games</h1>
+            <div id="gameArea">
+                <!-- Game content will be dynamically added here -->
+            </div>
+        </div>
+
         <div id="chatArea">
-            <!-- Chat Area -->
+            <h2>Chat</h2>
             <div id="chatMessages"></div>
             <input type="text" id="chatInput" placeholder="Enter your message" />
             <button id="sendMessageButton">Send</button>
@@ -32,19 +49,16 @@
     </main>
 
     <div id="authBox">
-        <!-- Auth Box (Login/Signup Form) -->
+        <h2>Login / Register</h2>
         <input type="text" id="usernameInput" placeholder="Username" />
         <input type="password" id="passwordInput" placeholder="Password" />
-        <input type="file" id="pfpInput" accept="image/*" />
         <button id="signUpBtn">Sign Up</button>
         <button id="loginBtn">Log In</button>
     </div>
 
     <div id="notification"></div>
-    <p>Balance: <span id="balance">0.00</span></p>
 
     <footer>
-        <!-- Footer -->
         <p>Made by You</p>
     </footer>
 
