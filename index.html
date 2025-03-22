@@ -32,12 +32,11 @@
     const db = getFirestore(app);
     const storage = getStorage(app);
 
-    // Expose Firebase services to the global window object for use in script.js
-    window.firebaseServices = { auth, db, storage };
+    // Now, auth, db, and storage can be used in your scripts
   </script>
 
   <!-- Your custom script to handle UI and Firebase interactions -->
-  <script defer src="script.js"></script>
+  <script type="module" src="script.js"></script>
 </head>
 
 <body>
