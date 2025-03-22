@@ -1,41 +1,60 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>FreeFlipFake</title>
-  <link rel="stylesheet" href="style.css" />
-  <script type="module" src="script.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fake Gambling Website</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-storage.js"></script>
 </head>
 <body>
-  <div class="container">
-    <h1>Welcome to FreeFlipFake</h1>
-
-    <!-- Login/Registration Form -->
-    <div id="auth-container">
-      <h2>Login/Register</h2>
-      <input type="text" id="username" placeholder="Enter username" />
-      <input type="password" id="password" placeholder="Enter password" />
-      <button id="login-btn">Login</button>
-      <button id="register-btn">Register</button>
+    <!-- Navigation Bar -->
+    <div class="navbar">
+        <a href="#" class="logo">Fake Gambling</a>
+        <div class="nav-links">
+            <a href="#" id="loginLink">Login</a>
+            <a href="#" id="registerLink">Register</a>
+        </div>
     </div>
 
-    <!-- Profile Information (when user is logged in) -->
-    <div id="profile-container" style="display: none;">
-      <h2>Profile</h2>
-      <img id="profile-picture" src="" alt="Profile Picture" />
-      <p id="username-display">Username: </p>
-      <p>Balance: <span id="balance">0.00</span> Coins</p>
-      <button id="logout-btn">Logout</button>
+    <!-- Authentication Form -->
+    <div id="authForm">
+        <div id="loginForm" style="display: none;">
+            <h2>Login</h2>
+            <input type="email" id="loginEmail" placeholder="Enter your email" required>
+            <input type="password" id="loginPassword" placeholder="Enter your password" required>
+            <button id="loginButton">Login</button>
+            <p>Don't have an account? <a href="#" id="goToRegister">Register</a></p>
+        </div>
+        <div id="registerForm" style="display: none;">
+            <h2>Register</h2>
+            <input type="email" id="registerEmail" placeholder="Enter your email" required>
+            <input type="password" id="registerPassword" placeholder="Enter your password" required>
+            <input type="file" id="profilePicInput" accept="image/*">
+            <button id="registerButton">Register</button>
+            <p>Already have an account? <a href="#" id="goToLogin">Login</a></p>
+        </div>
     </div>
 
-    <!-- Notification container -->
-    <div id="notification-container"></div>
-  </div>
+    <!-- Admin Panel (Visible only to 'a1xsas') -->
+    <div id="admin-panel" class="admin-panel" style="display: none;">
+        <h3>Admin Panel</h3>
+        <form id="updateBalanceForm">
+            <input type="text" id="usernameInput" placeholder="Enter Username" required>
+            <input type="number" id="amountInput" placeholder="Enter Amount to Add" required>
+            <button type="submit">Update Balance</button>
+        </form>
+    </div>
 
-  <!-- Footer -->
-  <footer>
-    <p>&copy; 2025 FakeFreeFlip | All rights reserved.</p>
-  </footer>
+    <!-- Profile Section -->
+    <div id="profileSection" style="display: none;">
+        <h2>Welcome, <span id="username"></span></h2>
+        <img id="profile-pic" src="" alt="Profile Picture">
+    </div>
+
+    <script src="script.js"></script>
 </body>
 </html>
