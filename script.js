@@ -1,52 +1,50 @@
-/* style.css */
-body {
-  margin: 0;
-  font-family: 'Segoe UI', sans-serif;
-  background: #1e1e2f;
-  color: white;
-  text-align: center;
+// script.js
+let balance = 1000;
+let rewardClaimed = false;
+
+function updateBalance() {
+  document.getElementById("balanceAmount").innerText = balance;
 }
 
-#topbar {
-  background: #292944;
-  padding: 20px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+function clickToEarn() {
+  balance += 50;
+  updateBalance();
 }
 
-#nav button {
-  margin: 0 10px;
-  padding: 8px 15px;
-  background: #3a3a5f;
-  border: none;
-  color: white;
-  border-radius: 5px;
-  cursor: pointer;
+function playSlots() {
+  if (balance < 100) {
+    alert("Not enough balance!");
+    return;
+  }
+
+  balance -= 100;
+  const win = Math.random() > 0.7;
+  if (win) {
+    const prize = 500;
+    balance += prize;
+    document.getElementById("slotResult").innerText = `🎉 You won $${prize}!`;
+  } else {
+    document.getElementById("slotResult").innerText = `😢 You lost...`;
+  }
+
+  updateBalance();
 }
 
-#nav button:hover {
-  background: #505072;
+function claimReward() {
+  if (rewardClaimed) {
+    document.getElementById("rewardStatus").innerText = "✅ Already claimed!";
+    return;
+  }
+
+  balance += 500;
+  rewardClaimed = true;
+  updateBalance();
+  document.getElementById("rewardStatus").innerText = "🎁 Reward claimed!";
 }
 
-#balance {
-  font-weight: bold;
-}
+function switchGame(game) {
+  const allGames = document.querySelectorAll(".game");
+  allGames.forEach(g => g.style.display = "none");
 
-#content {
-  padding: 30px;
-}
-
-button {
-  padding: 12px 20px;
-  margin-top: 15px;
-  background-color: #00b386;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-}
-
-button:hover {
-  background-color: #00d9a0;
+  document.getElementById(game + "Game").style.display = "block";
 }
