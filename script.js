@@ -54,7 +54,7 @@ function showNotification(message, type = "info") {
 
 // Update balance display
 function updateBalanceDisplay() {
-  const balanceElement = document.getElementById("profileBalance");
+  const balanceElement = document.getElementById("balance");
   if (balanceElement) {
     balanceElement.innerText = balance.toFixed(2);
   } else {
@@ -184,6 +184,52 @@ function loadUserProfile() {
     });
 }
 
+// Autoclicker functionality
+document.getElementById("clickerBtn").addEventListener("click", () => {
+  balance += 1;
+  updateBalanceDisplay();
+  showNotification("+1 coin!", "success");
+});
+
+// Coinflip game
+document.getElementById("coinflipBtn").addEventListener("click", () => {
+  const flipResult = Math.random() > 0.5 ? "Heads" : "Tails";
+  showNotification(`You flipped: ${flipResult}`, "info");
+});
+
+// Chat functionality
+document.getElementById("sendMessageButton").addEventListener("click", () => {
+  const message = document.getElementById("chatInput").value;
+  if (message.trim() === "") return;
+
+  if (!user) {
+    showNotification("You must be logged in to send messages.", "error");
+    return;
+  }
+
+  addDoc(collection(db, "chat"), {
+    message: message,
+    timestamp: Date.now(),
+    username: user.displayName || "Anonymous",
+  })
+    .then(() => {
+      document.getElementById("chatInput").value = "";
+    })
+    .catch((error) => {
+      showNotification("Error sending message: " + error.message, "error");
+    });
+});
+
+// Load chat messages
+onSnapshot(collection(db, "chat"), orderBy("timestamp"), (snapshot) => {
+  const chatMessages = document.getElementById("chatMessages");
+  chatMessages.innerHTML = "";
+  snapshot.forEach((doc) => {
+    const data = doc.data();
+    chatMessages.innerHTML += `<p><strong>${data.username}:</strong> ${data.message}</p>`;
+  });
+});
+
 // Event listeners for buttons
 document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("loginBtn").addEventListener("click", login);
@@ -192,6 +238,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Navigation buttons
   document.getElementById("homeBtn").addEventListener("click", () => showPage("homePage"));
+  document.getElementById("gamesBtn").addEventListener("click", () => showPage("gamesPage"));
   document.getElementById("profileBtn").addEventListener("click", () => showPage("profilePage"));
 });
 
