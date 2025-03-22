@@ -192,9 +192,19 @@ document.getElementById("clickerBtn").addEventListener("click", () => {
 });
 
 // Coinflip game
-document.getElementById("coinflipBtn").addEventListener("click", () => {
-  const flipResult = Math.random() > 0.5 ? "Heads" : "Tails";
-  showNotification(`You flipped: ${flipResult}`, "info");
+document.getElementById("coinflipGameBtn").addEventListener("click", () => {
+  const gameArea = document.getElementById("gameArea");
+  gameArea.innerHTML = `
+    <h2>🪙 Coinflip</h2>
+    <p>Select a side and flip the coin!</p>
+    <button id="coinflipBtn">Flip Coin</button>
+  `;
+  gameArea.style.display = "block";
+
+  document.getElementById("coinflipBtn").addEventListener("click", () => {
+    const flipResult = Math.random() > 0.5 ? "Heads" : "Tails";
+    showNotification(`You flipped: ${flipResult}`, "info");
+  });
 });
 
 // Chat functionality
