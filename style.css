@@ -2,166 +2,117 @@
 body {
   margin: 0;
   font-family: 'Segoe UI', sans-serif;
-  background-color: #2a1b56;
-  color: #e0c3fc;
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-  transition: background 0.3s ease;
-}
-
-h1 {
-  color: #9b4dca;
-  font-size: 2rem;
-  transition: color 0.3s ease;
+  background-color: #2b0a45;
+  color: #e0e0e0;
+  transition: all 0.3s ease;
 }
 
 header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  background-color: #540c74;
   padding: 20px;
-  background-color: #3e2a6c;
-  border-bottom: 2px solid #4f2b7e;
-  transition: background-color 0.3s ease;
+  text-align: center;
+  color: white;
+  border-bottom: 1px solid #8e4d91;
+}
+
+h1 {
+  margin: 0;
+  font-size: 2.5rem;
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
 }
 
 .wallet {
-  font-size: 1.1rem;
-  background: #9b4dca;
+  font-size: 1.2rem;
+  background: #9b1f73;
   padding: 6px 12px;
   border-radius: 8px;
 }
 
 nav {
-  background-color: #3e2a6c;
-  padding: 10px;
+  background-color: #3a0d5a;
+  padding: 15px;
   display: flex;
+  justify-content: center;
   gap: 15px;
-  border-bottom: 2px solid #4f2b7e;
+  border-bottom: 1px solid #8e4d91;
 }
 
 nav button {
-  background: #512b8b;
-  color: #e0c3fc;
+  background: #5a2a76;
+  color: #fff;
   padding: 12px 24px;
   border: none;
   border-radius: 8px;
+  font-size: 1rem;
   cursor: pointer;
-  font-size: 1.1rem;
   transition: background 0.3s ease;
 }
 
 nav button:hover {
-  background: #7a48b7;
+  background-color: #5d1970;
 }
 
 main {
   padding: 40px;
   text-align: center;
-  flex: 1;
-  background-color: #3a1c52;
-  border-radius: 8px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
-  animation: fadeIn 1s ease-in-out;
+  transition: all 0.3s ease;
 }
 
 footer {
+  background-color: #3a0d5a;
+  color: white;
   text-align: center;
-  padding: 20px;
-  background: #3e2a6c;
-  color: #b28dce;
-  border-top: 2px solid #4f2b7e;
+  padding: 15px;
+  border-top: 1px solid #8e4d91;
 }
 
 button {
-  padding: 12px 24px;
-  background-color: #9b4dca;
-  color: #fff;
-  font-size: 1.1rem;
+  padding: 10px 20px;
+  background-color: #9b1f73;
+  color: white;
+  font-size: 1.2rem;
   border: none;
-  border-radius: 10px;
+  border-radius: 8px;
   cursor: pointer;
-  margin-top: 20px;
-  transition: background-color 0.3s ease;
+  transition: all 0.3s ease;
 }
 
 button:hover {
-  background-color: #7a48b7;
+  background-color: #5d1970;
+  transform: scale(1.1);
 }
 
-.coinflip button {
-  padding: 10px 30px;
-  background: #9b4dca;
-  color: #fff;
-  font-size: 1.1rem;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background 0.3s ease;
-}
-
-.coinflip button:hover {
-  background: #7a48b7;
-}
-
-/* Chat System Styles */
 .chat-container {
   position: fixed;
-  right: 10px;
-  bottom: 10px;
-  width: 250px;
-  height: 400px;
-  background-color: #3a1c52;
-  border-radius: 8px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-  display: flex;
-  flex-direction: column;
+  bottom: 20px;
+  right: 20px;
+  width: 300px;
+  background-color: rgba(0, 0, 0, 0.7);
+  border-radius: 10px;
   padding: 10px;
-  font-size: 1rem;
-  z-index: 10;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
 }
 
 .chat-box {
-  flex: 1;
+  max-height: 300px;
   overflow-y: auto;
-  padding-right: 10px;
+  margin-bottom: 10px;
+  background-color: #1a0d26;
+  padding: 10px;
+  border-radius: 8px;
 }
 
 .chat-input {
+  width: 100%;
   padding: 10px;
-  background-color: #512b8b;
-  color: #e0c3fc;
-  border: none;
+  background-color: #3a0d5a;
+  border: 1px solid #5d1970;
   border-radius: 8px;
+  color: #fff;
   font-size: 1rem;
-  margin-top: 10px;
+  transition: all 0.3s ease;
 }
 
-.chat-message {
-  padding: 8px;
-  margin: 5px 0;
-  border-radius: 8px;
-  background-color: #9b4dca;
-  color: white;
-  animation: fadeMessage 0.5s ease-out;
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-@keyframes fadeMessage {
-  from {
-    opacity: 0;
-    transform: translateX(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
+.chat-input:focus {
+  background-color: #5a2a76;
 }
