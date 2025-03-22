@@ -1,9 +1,28 @@
-let balance = 0;
+// Initialize Firebase
+const firebaseConfig = {
+  apiKey: "YOUR_API_KEY",
+  authDomain: "YOUR_AUTH_DOMAIN",
+  projectId: "YOUR_PROJECT_ID",
+  storageBucket: "YOUR_STORAGE_BUCKET",
+  messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+  appId: "YOUR_APP_ID"
+};
 
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const db = firebase.firestore();
+const storage = firebase.storage();
+
+// Global variables
+let balance = 0;
+let user = null;
+
+// Update balance display
 function updateBalanceDisplay() {
   document.getElementById("balance").innerText = balance.toFixed(2);
 }
 
+// Switch between different game modes
 function switchGame(game) {
   const gameArea = document.getElementById("gameArea");
   gameArea.innerHTML = "";
@@ -12,16 +31,19 @@ function switchGame(game) {
     gameArea.innerHTML = `
       <h2>🪙 Coinflip</h2>
       <p>Select a side and flip the coin!</p>
+      <button onclick="coinflip()">Flip Coin</button>
     `;
   } else if (game === "slots") {
     gameArea.innerHTML = `
       <h2>🎰 Slots</h2>
       <p>Spin to win!</p>
+      <button onclick="spinSlots()">Spin</button>
     `;
   } else if (game === "lottery") {
     gameArea.innerHTML = `
       <h2>🎟️ Lottery</h2>
       <p>Buy tickets and win big!</p>
+      <button onclick="buyLottery()">Buy Ticket</button>
     `;
   } else if (game === "rewards") {
     gameArea.innerHTML = `
@@ -42,11 +64,113 @@ function switchGame(game) {
   }
 }
 
+// Firebase authentication functions
+function register() {
+  const username = document.getElementById("usernameInput").value;
+  const password = document.getElementById("passwordInput").value;
+
+  auth.createUserWithEmailAndPassword(username + "@fake.com", password)
+    .then((userCredential) => {
+      user = userCredential.user;
+      showMainUI();
+      saveUserData(username);
+    })
+    .catch((error) => {
+      alert(error.message);
+    });
+}
+
+function login() {
+  const username = document.getElementById("usernameInput").value;
+  const password = document.getElementById("passwordInput").value;
+
+  auth.signInWithEmailAndPassword(username + "@fake.com", password)
+    .then((userCredential) => {
+      user = userCredential.user;
+      showMainUI();
+    })
+    .catch((error) => {
+      alert(error.message);
+    });
+}
+
+function logout() {
+  auth.signOut().then(() => {
+    user = null;
+    showAuthUI();
+  }).catch((error) => {
+    alert(error.message);
+  });
+}
+
+// Update UI based on user authentication status
+auth.onAuthStateChanged((userCredential) => {
+  if (userCredential) {
+    user = userCredential.user;
+    showMainUI();
+  } else {
+    showAuthUI();
+  }
+});
+
+function showMainUI() {
+  document.getElementById("authContainer").style.display = "none";
+  document.getElementById("mainUI").style.display = "block";
+  document.getElementById("userName").innerText = user.displayName || "User";
+  loadUserProfile();
+}
+
+function showAuthUI() {
+  document.getElementById("authContainer").style.display = "block";
+  document.getElementById("mainUI").style.display = "none";
+}
+
+// Save user data to Firestore
+function saveUserData(username) {
+  db.collection("users").doc(user.uid).set({
+    username: username,
+    balance: 0,
+    profilePicture: null
+  }).then(() => {
+    updateBalanceDisplay();
+  }).catch((error) => {
+    alert("Error saving user data: " + error.message);
+  });
+}
+
+// Load user profile data
+function loadUserProfile() {
+  const userRef = db.collection("users").doc(user.uid);
+  userRef.get().then((doc) => {
+    if (doc.exists) {
+      const data = doc.data();
+      balance = data.balance;
+      updateBalanceDisplay();
+    }
+  });
+}
+
+// Handle game actions (coinflip, slots, lottery, etc.)
 function claimReward() {
   balance += 10;
   updateBalanceDisplay();
 }
 
+function coinflip() {
+  const flipResult = Math.random() > 0.5 ? "Heads" : "Tails";
+  alert(`You flipped: ${flipResult}`);
+}
+
+function spinSlots() {
+  const slotResult = Math.floor(Math.random() * 7) + 1;
+  alert(`You spun: ${slotResult}`);
+}
+
+function buyLottery() {
+  alert("Lottery ticket purchased! Good luck!");
+}
+
+// Chat functions
 function sendMessage() {
   const message = document.getElementById("chatInput").value;
   if (message.trim() === "") return;
@@ -67,13 +191,5 @@ function loadChat() {
     });
 }
 
-// Show Login/Registration Forms
-function showLogin() {
-  // Your login logic here
-}
-
-function showRegister() {
-  // Your registration logic here
-}
-
+// Update balance display on page load
 updateBalanceDisplay();
