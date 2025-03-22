@@ -1,11 +1,12 @@
 // Firebase configuration
 const firebaseConfig = {
-    apiKey: "YOUR_API_KEY",
-    authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-    projectId: "YOUR_PROJECT_ID",
-    storageBucket: "YOUR_PROJECT_ID.appspot.com",
-    messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-    appId: "YOUR_APP_ID"
+  apiKey: "AIzaSyAmJNWl_5VFaUQwjzMjBKbX6ZoLxdr5mko",
+  authDomain: "fakefreeflipdatabase.firebaseapp.com",
+  projectId: "fakefreeflipdatabase",
+  storageBucket: "fakefreeflipdatabase.firebasestorage.app",
+  messagingSenderId: "127508082386",
+  appId: "1:127508082386:web:883c2be8b481b3c6e5870b",
+  measurementId: "G-RW520XL4R4"
 };
 
 // Initialize Firebase
