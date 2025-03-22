@@ -75,7 +75,11 @@ function showMainUI() {
     usernameDisplay.innerText = user.displayName || "User"; // Update username
     logoutBtn.style.display = "block"; // Show logout button
   }
-  loadUserProfile();
+
+  // Load user profile only if user is authenticated
+  if (user) {
+    loadUserProfile();
+  }
 }
 
 // Update UI after logout
@@ -143,12 +147,18 @@ onAuthStateChanged(auth, (userCredential) => {
     user = userCredential.user;
     showMainUI();
   } else {
+    user = null; // Reset user object
     showAuthUI();
   }
 });
 
 // Save user data to Firestore
 function saveUserData(username) {
+  if (!user) {
+    showNotification("User not authenticated.", "error");
+    return;
+  }
+
   setDoc(doc(db, "users", user.uid), {
     username: username,
     balance: 0,
@@ -164,6 +174,11 @@ function saveUserData(username) {
 
 // Load user profile data
 function loadUserProfile() {
+  if (!user) {
+    showNotification("User not authenticated.", "error");
+    return;
+  }
+
   const userRef = doc(db, "users", user.uid);
   getDoc(userRef)
     .then((docSnap) => {
