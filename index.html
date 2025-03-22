@@ -3,59 +3,60 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fake Gambling Website</title>
+    <title>Gambling Website</title>
     <link rel="stylesheet" href="style.css">
-<!-- Add Firebase SDKs (use the latest versions from Firebase) -->
-<script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js" type="module"></script>
-<script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-auth.js" type="module"></script>
-<script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore.js" type="module"></script>
-<script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-storage.js" type="module"></script>
+    <!-- Firebase Scripts -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-storage.js"></script>
 </head>
 <body>
-    <!-- Navigation Bar -->
-    <div class="navbar">
-        <a href="#" class="logo">Fake Gambling</a>
-        <div class="nav-links">
-            <a href="#" id="loginLink">Login</a>
-            <a href="#" id="registerLink">Register</a>
+    <!-- Header -->
+    <header>
+        <div class="user-info">
+            <img src="path/to/pfp.jpg" alt="User Avatar" class="pfp">
+            <span id="username">User</span>
         </div>
-    </div>
+        <nav>
+            <button>Home</button>
+            <button>Games</button>
+            <button>Account</button>
+        </nav>
+    </header>
 
-    <!-- Authentication Form -->
-    <div id="authForm">
-        <div id="loginForm" style="display: none;">
-            <h2>Login</h2>
-            <input type="email" id="loginEmail" placeholder="Enter your email" required>
-            <input type="password" id="loginPassword" placeholder="Enter your password" required>
-            <button id="loginButton">Login</button>
-            <p>Don't have an account? <a href="#" id="goToRegister">Register</a></p>
+    <!-- Main content -->
+    <main>
+        <div id="gameArea">
+            <!-- Game content here -->
+            <h1>Game Area</h1>
+            <p>Here, you can play various gambling games.</p>
         </div>
-        <div id="registerForm" style="display: none;">
-            <h2>Register</h2>
-            <input type="email" id="registerEmail" placeholder="Enter your email" required>
-            <input type="password" id="registerPassword" placeholder="Enter your password" required>
-            <input type="file" id="profilePicInput" accept="image/*">
-            <button id="registerButton">Register</button>
-            <p>Already have an account? <a href="#" id="goToLogin">Login</a></p>
+
+        <div id="chatArea">
+            <div id="chatMessages">
+                <!-- Chat messages will be injected here -->
+            </div>
+            <input id="chatInput" type="text" placeholder="Type a message...">
+            <button id="sendMessageButton">Send</button>
         </div>
+    </main>
+
+    <!-- Authentication Box -->
+    <div class="auth-box" id="authBox">
+        <h2>Sign Up / Login</h2>
+        <input type="email" id="emailInput" placeholder="Enter your email">
+        <input type="password" id="passwordInput" placeholder="Enter your password">
+        <button id="signUpBtn">Sign Up</button>
+        <button id="loginBtn">Login</button>
     </div>
 
-    <!-- Admin Panel (Visible only to 'a1xsas') -->
-    <div id="admin-panel" class="admin-panel" style="display: none;">
-        <h3>Admin Panel</h3>
-        <form id="updateBalanceForm">
-            <input type="text" id="usernameInput" placeholder="Enter Username" required>
-            <input type="number" id="amountInput" placeholder="Enter Amount to Add" required>
-            <button type="submit">Update Balance</button>
-        </form>
-    </div>
+    <!-- Footer -->
+    <footer>
+        &copy; 2025 Gambling Website. All rights reserved.
+    </footer>
 
-    <!-- Profile Section -->
-    <div id="profileSection" style="display: none;">
-        <h2>Welcome, <span id="username"></span></h2>
-        <img id="profile-pic" src="" alt="Profile Picture">
-    </div>
-
+    <!-- Firebase Auth and Firestore functionality script -->
     <script src="script.js"></script>
 </body>
 </html>
