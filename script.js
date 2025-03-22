@@ -1,4 +1,3 @@
-// Wait for the DOM content to be loaded before running the script
 document.addEventListener('DOMContentLoaded', function () {
 
   // Initialize Firebase (Ensure Firebase SDK is already imported in the HTML)
@@ -33,6 +32,8 @@ document.addEventListener('DOMContentLoaded', function () {
     const balanceElement = document.getElementById("balance");
     if (balanceElement) {
       balanceElement.innerText = balance.toFixed(2);
+    } else {
+      console.error("Balance element not found");
     }
   }
 
