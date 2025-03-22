@@ -1,50 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your App</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FreeFlipFake</title>
+  <link rel="stylesheet" href="style.css" />
+  <script type="module" src="script.js"></script>
 </head>
 <body>
-    <header>
-        <div class="user-info">
-            <img class="pfp" id="profilePic" src="images/default.jpg" alt="User Profile Picture" />
-            <span id="username">Guest</span>
-        </div>
-        <nav>
-            <button id="homeBtn">Home</button>
-            <button id="profileBtn">Profile</button>
-            <button id="logoutBtn">Logout</button>
-        </nav>
-    </header>
+  <div class="container">
+    <h1>Welcome to FreeFlipFake</h1>
 
-    <main>
-        <div id="gameArea">
-            <!-- Game Area (Content dynamically added via script.js) -->
-        </div>
-        <div id="chatArea">
-            <!-- Chat Area -->
-            <div id="chatMessages"></div>
-            <input type="text" id="chatInput" placeholder="Enter your message" />
-            <button id="sendMessageButton">Send</button>
-        </div>
-    </main>
-
-    <div id="authBox">
-        <!-- Auth Box (Login/Signup Form) -->
-        <input type="text" id="usernameInput" placeholder="Username" />
-        <input type="password" id="passwordInput" placeholder="Password" />
-        <input type="file" id="pfpInput" accept="image/*" />
-        <button id="signUpBtn">Sign Up</button>
-        <button id="loginBtn">Log In</button>
+    <!-- Login/Registration Form -->
+    <div id="auth-container">
+      <h2>Login/Register</h2>
+      <div>
+        <input type="text" id="username" placeholder="Enter username" />
+      </div>
+      <div>
+        <input type="password" id="password" placeholder="Enter password" />
+      </div>
+      <button id="login-btn">Login</button>
+      <button id="register-btn">Register</button>
     </div>
 
-    <footer>
-        <!-- Footer -->
-        <p>Made by You</p>
-    </footer>
+    <!-- Profile Information (when user is logged in) -->
+    <div id="profile-container" style="display: none;">
+      <h2>Profile</h2>
+      <div>
+        <img id="profile-picture" src="" alt="Profile Picture" />
+        <p id="username-display">Username: </p>
+        <p id="balance">Balance: 0.00</p> <!-- Added balance element -->
+        <button id="logout-btn">Logout</button>
+      </div>
+    </div>
+  </div>
 
-    <script type="module" src="script.js"></script>
+  <!-- Footer -->
+  <footer>
+    <p>&copy; 2025 FakeFreeFlip | All rights reserved.</p>
+  </footer>
 </body>
 </html>
