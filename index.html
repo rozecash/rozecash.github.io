@@ -11,9 +11,14 @@
         <div class="user-info">
             <img class="pfp" id="profilePic" src="images/default.jpg" alt="User Profile Picture" />
             <span id="username">Guest</span>
+            <div id="balanceDisplay">
+                <span>Balance:</span>
+                <span id="balance">0.00</span>
+            </div>
         </div>
         <nav>
             <button id="homeBtn">Home</button>
+            <button id="gamesBtn">Games</button>
             <button id="profileBtn">Profile</button>
             <button id="logoutBtn" style="display: none;">Logout</button>
         </nav>
@@ -36,8 +41,16 @@
         <div id="gamesPage" class="page" style="display: none;">
             <h1>Games</h1>
             <div id="gameArea">
-                <!-- Game content will be dynamically added here -->
+                <h2>🪙 Coinflip</h2>
+                <p>Select a side and flip the coin!</p>
+                <button id="coinflipBtn">Flip Coin</button>
             </div>
+        </div>
+
+        <div id="autoclicker">
+            <h2>Autoclicker</h2>
+            <p>Click the button to earn money!</p>
+            <button id="clickerBtn">Click Me!</button>
         </div>
 
         <div id="chatArea">
