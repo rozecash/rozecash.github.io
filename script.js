@@ -150,15 +150,22 @@ onAuthStateChanged(auth, (userCredential) => {
 });
 
 function showMainUI() {
-  const authContainer = document.getElementById("auth-container");
-  const profileContainer = document.getElementById("profile-container");
-  if (authContainer && profileContainer) {
+  const authContainer = document.getElementById("authContainer");
+  const mainUI = document.getElementById("mainUI");
+  if (authContainer && mainUI) {
     authContainer.style.display = "none";
-    profileContainer.style.display = "block";
+    mainUI.style.display = "block";
   }
-  document.getElementById("username-display").innerText = "Username: " + (user.displayName || "User");
+
+  if (user && user.displayName) {
+    document.getElementById("userName").innerText = user.displayName;
+  } else {
+    document.getElementById("userName").innerText = "User"; // Set a default name if displayName is not available
+  }
+
   loadUserProfile();
 }
+
 
 function showAuthUI() {
   const authContainer = document.getElementById("auth-container");
