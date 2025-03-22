@@ -17,6 +17,7 @@ import {
   signInWithEmailAndPassword,
   signOut,
   onAuthStateChanged,
+  updateProfile,
 } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
 import {
   getFirestore,
@@ -40,6 +41,17 @@ const storage = getStorage(app);
 let user = null;
 let balance = 0;
 
+// Show notification
+function showNotification(message, type = "info") {
+  const notification = document.getElementById("notification");
+  notification.innerText = message;
+  notification.className = `notification ${type}`;
+  notification.style.display = "block";
+  setTimeout(() => {
+    notification.style.display = "none";
+  }, 3000);
+}
+
 // Update balance display
 function updateBalanceDisplay() {
   const balanceElement = document.getElementById("balance");
@@ -50,55 +62,32 @@ function updateBalanceDisplay() {
   }
 }
 
-// Switch between different game modes
-function switchGame(game) {
-  const gameArea = document.getElementById("gameArea");
-  if (!gameArea) {
-    console.error("Game area not found");
-    return;
+// Update UI after login
+function showMainUI() {
+  const authBox = document.getElementById("authBox");
+  const profileContainer = document.getElementById("profile-container");
+  const usernameDisplay = document.getElementById("username");
+  const logoutBtn = document.getElementById("logoutBtn");
+
+  if (authBox && profileContainer && usernameDisplay && logoutBtn) {
+    authBox.style.display = "none"; // Hide login tab
+    profileContainer.style.display = "block"; // Show profile
+    usernameDisplay.innerText = user.displayName || "User"; // Update username
+    logoutBtn.style.display = "block"; // Show logout button
   }
+  loadUserProfile();
+}
 
-  gameArea.innerHTML = "";
+// Update UI after logout
+function showAuthUI() {
+  const authBox = document.getElementById("authBox");
+  const profileContainer = document.getElementById("profile-container");
+  const logoutBtn = document.getElementById("logoutBtn");
 
-  if (game === "coinflip") {
-    gameArea.innerHTML = `
-      <h2>🪙 Coinflip</h2>
-      <p>Select a side and flip the coin!</p>
-      <button id="coinflipBtn">Flip Coin</button>
-    `;
-    document.getElementById("coinflipBtn").addEventListener("click", coinflip);
-  } else if (game === "slots") {
-    gameArea.innerHTML = `
-      <h2>🎰 Slots</h2>
-      <p>Spin to win!</p>
-      <button id="spinSlotsBtn">Spin</button>
-    `;
-    document.getElementById("spinSlotsBtn").addEventListener("click", spinSlots);
-  } else if (game === "lottery") {
-    gameArea.innerHTML = `
-      <h2>🎟️ Lottery</h2>
-      <p>Buy tickets and win big!</p>
-      <button id="buyLotteryBtn">Buy Ticket</button>
-    `;
-    document.getElementById("buyLotteryBtn").addEventListener("click", buyLottery);
-  } else if (game === "rewards") {
-    gameArea.innerHTML = `
-      <h2>🎁 Rewards</h2>
-      <button id="claimRewardBtn">Claim 10 Coins</button>
-    `;
-    document.getElementById("claimRewardBtn").addEventListener("click", claimReward);
-  } else if (game === "chat") {
-    gameArea.innerHTML = `
-      <div class="chat-box" id="chatBox">
-        <div id="chatMessages"></div>
-        <div class="chat-input">
-          <input id="chatInput" type="text" placeholder="Type a message..." />
-          <button id="sendMessageBtn">Send</button>
-        </div>
-      </div>
-    `;
-    document.getElementById("sendMessageBtn").addEventListener("click", sendMessage);
-    loadChat();
+  if (authBox && profileContainer && logoutBtn) {
+    authBox.style.display = "block"; // Show login tab
+    profileContainer.style.display = "none"; // Hide profile
+    logoutBtn.style.display = "none"; // Hide logout button
   }
 }
 
@@ -110,11 +99,15 @@ function register() {
   createUserWithEmailAndPassword(auth, username + "@fake.com", password)
     .then((userCredential) => {
       user = userCredential.user;
+      return updateProfile(user, { displayName: username });
+    })
+    .then(() => {
+      showNotification("Registration successful!", "success");
       showMainUI();
       saveUserData(username);
     })
     .catch((error) => {
-      alert(error.message);
+      showNotification(error.message, "error");
     });
 }
 
@@ -125,21 +118,22 @@ function login() {
   signInWithEmailAndPassword(auth, username + "@fake.com", password)
     .then((userCredential) => {
       user = userCredential.user;
+      showNotification("Login successful!", "success");
       showMainUI();
     })
     .catch((error) => {
-      alert(error.message);
+      showNotification(error.message, "error");
     });
 }
 
 function logout() {
   signOut(auth)
     .then(() => {
-      user = null;
+      showNotification("Logged out successfully!", "success");
       showAuthUI();
     })
     .catch((error) => {
-      alert(error.message);
+      showNotification(error.message, "error");
     });
 }
 
@@ -153,26 +147,6 @@ onAuthStateChanged(auth, (userCredential) => {
   }
 });
 
-function showMainUI() {
-  const authBox = document.getElementById("authBox");
-  const profileContainer = document.getElementById("profile-container");
-  if (authBox && profileContainer) {
-    authBox.style.display = "none";
-    profileContainer.style.display = "block";
-  }
-  document.getElementById("username").innerText = "Username: " + (user.displayName || "User");
-  loadUserProfile();
-}
-
-function showAuthUI() {
-  const authBox = document.getElementById("authBox");
-  const profileContainer = document.getElementById("profile-container");
-  if (authBox && profileContainer) {
-    authBox.style.display = "block";
-    profileContainer.style.display = "none";
-  }
-}
-
 // Save user data to Firestore
 function saveUserData(username) {
   setDoc(doc(db, "users", user.uid), {
@@ -184,7 +158,7 @@ function saveUserData(username) {
       updateBalanceDisplay();
     })
     .catch((error) => {
-      alert("Error saving user data: " + error.message);
+      showNotification("Error saving user data: " + error.message, "error");
     });
 }
 
@@ -200,46 +174,8 @@ function loadUserProfile() {
       }
     })
     .catch((error) => {
-      alert("Error loading user profile: " + error.message);
+      showNotification("Error loading user profile: " + error.message, "error");
     });
-}
-
-// Handle game actions
-function claimReward() {
-  balance += 10;
-  updateBalanceDisplay();
-}
-
-function coinflip() {
-  const flipResult = Math.random() > 0.5 ? "Heads" : "Tails";
-  alert(`You flipped: ${flipResult}`);
-}
-
-function spinSlots() {
-  const slotResult = Math.floor(Math.random() * 7) + 1;
-  alert(`You spun: ${slotResult}`);
-}
-
-function buyLottery() {
-  alert("Lottery ticket purchased! Good luck!");
-}
-
-// Chat functions
-function sendMessage() {
-  const message = document.getElementById("chatInput").value;
-  if (message.trim() === "") return;
-  addDoc(collection(db, "chat"), { message, timestamp: Date.now() });
-  document.getElementById("chatInput").value = "";
-}
-
-function loadChat() {
-  const chatMessages = document.getElementById("chatMessages");
-  onSnapshot(collection(db, "chat"), orderBy("timestamp"), (snapshot) => {
-    chatMessages.innerHTML = "";
-    snapshot.forEach((doc) => {
-      chatMessages.innerHTML += `<p>${doc.data().message}</p>`;
-    });
-  });
 }
 
 // Event listeners for buttons
