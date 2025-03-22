@@ -1,44 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>FreeFlipFake</title>
   <link rel="stylesheet" href="style.css" />
-
-  <!-- Firebase JS SDK v9+ (modular import) -->
-  <script type="module">
-    // Firebase configuration object
-    const firebaseConfig = {
-      apiKey: "AIzaSyAmJNWl_5VFaUQwjzMjBKbX6ZoLxdr5mko",
-      authDomain: "fakefreeflipdatabase.firebaseapp.com",
-      projectId: "fakefreeflipdatabase",
-      storageBucket: "fakefreeflipdatabase.firebasestorage.app",
-      messagingSenderId: "127508082386",
-      appId: "1:127508082386:web:883c2be8b481b3c6e5870b",
-      measurementId: "G-RW520XL4R4"
-    };
-
-    // Import Firebase App and Firebase SDK services
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
-    import { getAuth } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
-    import { getFirestore } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
-    import { getStorage } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-storage.js";
-
-    // Initialize Firebase
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const db = getFirestore(app);
-    const storage = getStorage(app);
-
-    // Now, auth, db, and storage can be used in your scripts
-  </script>
-
   <!-- Your custom script to handle UI and Firebase interactions -->
   <script type="module" src="script.js"></script>
 </head>
-
 <body>
   <div class="container">
     <h1>Welcome to FreeFlipFake</h1>
@@ -72,5 +41,4 @@
     <p>&copy; 2025 FakeFreeFlip | All rights reserved.</p>
   </footer>
 </body>
-
 </html>
