@@ -1,62 +1,76 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>FreeFlipFake</title>
-  <link rel="stylesheet" href="style.css"/>
+  <link rel="stylesheet" href="style.css" />
+
+  <!-- Firebase JS SDK v9+ (modular import) -->
+  <script type="module">
+    // Firebase configuration object
+    const firebaseConfig = {
+      apiKey: "AIzaSyAmJNWl_5VFaUQwjzMjBKbX6ZoLxdr5mko",
+      authDomain: "fakefreeflipdatabase.firebaseapp.com",
+      projectId: "fakefreeflipdatabase",
+      storageBucket: "fakefreeflipdatabase.firebasestorage.app",
+      messagingSenderId: "127508082386",
+      appId: "1:127508082386:web:883c2be8b481b3c6e5870b",
+      measurementId: "G-RW520XL4R4"
+    };
+
+    // Import Firebase App and Firebase SDK services
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+    import { getAuth } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
+    import { getFirestore } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
+    import { getStorage } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-storage.js";
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+    const storage = getStorage(app);
+
+    // Now, auth, db, and storage can be used in your scripts
+  </script>
+
+  <!-- Your custom script to handle UI and Firebase interactions -->
   <script defer src="script.js"></script>
-  <!-- Firebase CDN scripts -->
-  <script defer src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
-  <script defer src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
-  <script defer src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js"></script>
-  <script defer src="https://www.gstatic.com/firebasejs/9.6.1/firebase-storage.js"></script>
 </head>
+
 <body>
+  <div class="container">
+    <h1>Welcome to FreeFlipFake</h1>
 
-  <!-- Authentication -->
-  <div id="authContainer" class="auth-box">
-    <h2>Login / Register</h2>
-    <input type="text" id="usernameInput" placeholder="Username"/>
-    <input type="password" id="passwordInput" placeholder="Password"/>
-    <input type="file" id="pfpInput"/>
-    <button onclick="register()">Register</button>
-    <button onclick="login()">Login</button>
-  </div>
-
-  <!-- Logged-in UI -->
-  <div id="mainUI" style="display: none;">
-    <header>
-      <h1>🎰 FreeFlipFake</h1>
-      <div class="user-info">
-        <img id="userPfp" class="pfp" src="" />
-        <span id="userName">User</span>
-        <span>🪙 <span id="balance">0</span></span>
-        <button onclick="logout()">Logout</button>
+    <!-- Login/Registration Form -->
+    <div id="auth-container">
+      <h2>Login/Register</h2>
+      <div>
+        <input type="text" id="username" placeholder="Enter username" />
       </div>
-    </header>
+      <div>
+        <input type="password" id="password" placeholder="Enter password" />
+      </div>
+      <button id="login-btn">Login</button>
+      <button id="register-btn">Register</button>
+    </div>
 
-    <nav>
-      <button onclick="switchGame('clicker')">🖱️ Clicker</button>
-      <button onclick="switchGame('slots')">🎰 Slots</button>
-      <button onclick="switchGame('coinflip')">🪙 Coinflip</button>
-      <button onclick="switchGame('lottery')">🎟️ Lottery</button>
-      <button onclick="switchGame('rewards')">🎁 Rewards</button>
-    </nav>
-
-    <main>
-      <section id="gameArea"><!-- Games load here --></section>
-      <aside id="chatArea">
-        <div id="chatMessages"></div>
-        <input type="text" id="chatInput" placeholder="Type a message..."/>
-        <button onclick="sendMessage()">Send</button>
-      </aside>
-    </main>
-
-    <footer>
-      <p>2025 &copy; FreeFlipFake. Not a real gambling site.</p>
-    </footer>
+    <!-- Profile Information (when user is logged in) -->
+    <div id="profile-container" style="display: none;">
+      <h2>Profile</h2>
+      <div>
+        <img id="profile-picture" src="" alt="Profile Picture" />
+        <p id="username-display">Username: </p>
+        <button id="logout-btn">Logout</button>
+      </div>
+    </div>
   </div>
 
+  <!-- Footer -->
+  <footer>
+    <p>&copy; 2025 FakeFreeFlip | All rights reserved.</p>
+  </footer>
 </body>
+
 </html>
