@@ -78,6 +78,19 @@ function showMainUI() {
   showPage("homePage");
 }
 
+// Update UI after logout
+function showAuthUI() {
+  const authBox = document.getElementById("authBox");
+  const usernameDisplay = document.getElementById("username");
+  const logoutBtn = document.getElementById("logoutBtn");
+
+  if (authBox && usernameDisplay && logoutBtn) {
+    authBox.style.display = "block"; // Show login tab
+    usernameDisplay.innerText = "Guest"; // Reset username
+    logoutBtn.style.display = "none"; // Hide logout button
+  }
+}
+
 // Show a specific page
 function showPage(pageId) {
   const pages = document.querySelectorAll(".page");
