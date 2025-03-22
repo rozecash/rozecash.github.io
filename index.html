@@ -12,17 +12,21 @@
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-storage.js"></script>
 </head>
 <body>
-    <!-- Your HTML content goes here -->
     <header>
         <div class="user-info">
-            <img class="pfp" src="path/to/default.jpg" alt="User Profile Picture" />
+            <img class="pfp" id="profilePic" src="path/to/default.jpg" alt="User Profile Picture" />
             <span id="username">Guest</span>
         </div>
+        <nav>
+            <button id="homeBtn">Home</button>
+            <button id="profileBtn">Profile</button>
+            <button id="logoutBtn">Logout</button>
+        </nav>
     </header>
 
     <main>
         <div id="gameArea">
-            <!-- Game Area -->
+            <!-- Game Area (Content dynamically added via script.js) -->
         </div>
         <div id="chatArea">
             <!-- Chat Area -->
