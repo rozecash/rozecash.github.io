@@ -1,14 +1,42 @@
+<!-- index.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>My Cool Website</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Boss Casino</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>Welcome to My Website!</h1>
-  <p>Built from scratch. Hosted for free. Let's go!</p>
+  <div id="topbar">
+    <h2>💎 Boss Casino</h2>
+    <div id="nav">
+      <button onclick="switchGame('clicker')">Clicker</button>
+      <button onclick="switchGame('slots')">Slots</button>
+      <button onclick="switchGame('rewards')">Rewards</button>
+    </div>
+    <div id="balance">Balance: $<span id="balanceAmount">1000</span></div>
+  </div>
+
+  <div id="content">
+    <div id="clickerGame" class="game">
+      <h3>💵 Clicker Game</h3>
+      <button onclick="clickToEarn()">Click to Earn $50</button>
+    </div>
+
+    <div id="slotsGame" class="game" style="display: none;">
+      <h3>🎰 Slot Machine (Fake)</h3>
+      <button onclick="playSlots()">Spin (-$100)</button>
+      <p id="slotResult"></p>
+    </div>
+
+    <div id="rewardsGame" class="game" style="display: none;">
+      <h3>🏆 Rewards</h3>
+      <button onclick="claimReward()">Claim $500 Bonus</button>
+      <p id="rewardStatus"></p>
+    </div>
+  </div>
+
   <script src="script.js"></script>
 </body>
 </html>
