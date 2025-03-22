@@ -1,24 +1,7 @@
-// Import Firebase components
-import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
-import { getFirestore, doc, setDoc, getDoc, collection, addDoc, query, orderBy, onSnapshot } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
-import { getStorage } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-storage.js";
-
-// Firebase configuration
-const firebaseConfig = {
-  apiKey: "AIzaSyAmJNWl_5VFaUQwjzMjBKbX6ZoLxdr5mko",
-  authDomain: "fakefreeflipdatabase.firebaseapp.com",
-  projectId: "fakefreeflipdatabase",
-  storageBucket: "fakefreeflipdatabase.firebasestorage.app",
-  messagingSenderId: "127508082386",
-  appId: "1:127508082386:web:883c2be8b481b3c6e5870b"
-};
-
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
-const storage = getStorage(app);
+// Use the Firebase services from the global window object
+const auth = window.firebaseServices.auth;
+const db = window.firebaseServices.db;
+const storage = window.firebaseServices.storage;
 
 // Global variables
 let balance = 0;
@@ -76,7 +59,7 @@ function register() {
   const username = document.getElementById("usernameInput").value;
   const password = document.getElementById("passwordInput").value;
 
-  createUserWithEmailAndPassword(auth, username + "@fake.com", password)
+  auth.createUserWithEmailAndPassword(username + "@fake.com", password)
     .then((userCredential) => {
       user = userCredential.user;
       showMainUI();
@@ -91,7 +74,7 @@ function login() {
   const username = document.getElementById("usernameInput").value;
   const password = document.getElementById("passwordInput").value;
 
-  signInWithEmailAndPassword(auth, username + "@fake.com", password)
+  auth.signInWithEmailAndPassword(username + "@fake.com", password)
     .then((userCredential) => {
       user = userCredential.user;
       showMainUI();
@@ -102,7 +85,7 @@ function login() {
 }
 
 function logout() {
-  signOut(auth).then(() => {
+  auth.signOut().then(() => {
     user = null;
     showAuthUI();
   }).catch((error) => {
@@ -111,7 +94,7 @@ function logout() {
 }
 
 // Update UI based on user authentication status
-onAuthStateChanged(auth, (userCredential) => {
+auth.onAuthStateChanged((userCredential) => {
   if (userCredential) {
     user = userCredential.user;
     showMainUI();
@@ -134,7 +117,7 @@ function showAuthUI() {
 
 // Save user data to Firestore
 function saveUserData(username) {
-  setDoc(doc(db, "users", user.uid), {
+  db.collection("users").doc(user.uid).set({
     username: username,
     balance: 0,
     profilePicture: null
@@ -147,10 +130,10 @@ function saveUserData(username) {
 
 // Load user profile data
 function loadUserProfile() {
-  const userRef = doc(db, "users", user.uid);
-  getDoc(userRef).then((docSnapshot) => {
-    if (docSnapshot.exists()) {
-      const data = docSnapshot.data();
+  const userRef = db.collection("users").doc(user.uid);
+  userRef.get().then((doc) => {
+    if (doc.exists) {
+      const data = doc.data();
       balance = data.balance;
       updateBalanceDisplay();
     }
@@ -182,19 +165,20 @@ function sendMessage() {
   const message = document.getElementById("chatInput").value;
   if (message.trim() === "") return;
 
-  addDoc(collection(db, "chat"), { message, timestamp: Date.now() });
+  db.collection("chat").add({ message, timestamp: Date.now() });
   document.getElementById("chatInput").value = "";
 }
 
 function loadChat() {
   const chatMessages = document.getElementById("chatMessages");
-  const q = query(collection(db, "chat"), orderBy("timestamp"));
-  onSnapshot(q, (snapshot) => {
-    chatMessages.innerHTML = "";
-    snapshot.forEach((docSnapshot) => {
-      chatMessages.innerHTML += `<p>${docSnapshot.data().message}</p>`;
+  db.collection("chat")
+    .orderBy("timestamp")
+    .onSnapshot((snapshot) => {
+      chatMessages.innerHTML = "";
+      snapshot.forEach((doc) => {
+        chatMessages.innerHTML += `<p>${doc.data().message}</p>`;
+      });
     });
-  });
 }
 
 // Update balance display on page load
