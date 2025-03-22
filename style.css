@@ -3,7 +3,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: Arial, sans-serif;
+    font-family: 'Roboto', sans-serif;
 }
 
 /* Body Style */
@@ -23,7 +23,7 @@ button {
     background: linear-gradient(45deg, #7c4dff, #9c27b0);
     border: none;
     border-radius: 8px;
-    padding: 12px 24px;
+    padding: 14px 28px;
     color: white;
     font-size: 16px;
     cursor: pointer;
@@ -37,13 +37,13 @@ button:hover {
     box-shadow: 0 0 30px rgba(255, 0, 255, 1), 0 0 40px rgba(255, 0, 255, 0.7);
 }
 
-/* Auth Form and Profile Section */
+/* Form and Profile Section */
 #authForm, #profileSection, #admin-panel {
     background-color: rgba(0, 0, 0, 0.7);
     border-radius: 10px;
     padding: 20px;
     margin: 10px;
-    width: 300px;
+    width: 320px;
     text-align: center;
     box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
 }
@@ -90,7 +90,7 @@ a:hover {
     background-color: rgba(0, 0, 0, 0.9);
     border-radius: 10px;
     padding: 30px;
-    width: 300px;
+    width: 320px;
     text-align: center;
 }
 
@@ -117,7 +117,7 @@ a:hover {
     background-color: rgba(0, 0, 0, 0.8);
     padding: 20px;
     border-radius: 10px;
-    width: 300px;
+    width: 320px;
     text-align: center;
 }
 
@@ -195,15 +195,4 @@ a:hover {
 
 #navBar a:hover {
     color: #9c27b0;
-}
-
-/* Glow Animation */
-@keyframes glowing {
-    0% { box-shadow: 0 0 5px #ff00ff, 0 0 10px #ff00ff, 0 0 15px #ff00ff; }
-    50% { box-shadow: 0 0 10px #ff00ff, 0 0 20px #ff00ff, 0 0 30px #ff00ff; }
-    100% { box-shadow: 0 0 5px #ff00ff, 0 0 10px #ff00ff, 0 0 15px #ff00ff; }
-}
-
-.glowing-effect {
-    animation: glowing 1.5s infinite;
 }
