@@ -1,119 +1,131 @@
-let balance = parseFloat(localStorage.getItem('balance')) || 0;  // Fetch balance from localStorage
-
-// Function to update balance display
-function updateBalanceDisplay() {
-  document.getElementById("balance").innerText = balance.toFixed(2);
-  localStorage.setItem('balance', balance);  // Store balance in localStorage
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #1a1d23;
+  color: #c9d1d9;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
-// Function to switch between game modes
-function switchGame(game) {
-  const gameArea = document.getElementById("gameArea");
-  gameArea.innerHTML = "";  // Clear current game content
-
-  if (game === "clicker") {
-    gameArea.innerHTML = `
-      <h2>🖱️ Click to Earn</h2>
-      <button onclick="clickToEarn()">Click Me</button>
-      <p>Click to earn coins. Each click gives you 0.25 coins.</p>
-    `;
-  } else if (game === "slots") {
-    gameArea.innerHTML = `
-      <h2>🎰 Slots</h2>
-      <button onclick="playSlots()">Spin Slots</button>
-      <p>Spin the slots to (maybe) win big!</p>
-    `;
-  } else if (game === "reward") {
-    gameArea.innerHTML = `
-      <h2>🎁 Daily Reward</h2>
-      <button onclick="claimReward()">Claim 10 Coins</button>
-      <p>Come back daily to claim a reward!</p>
-    `;
-  } else if (game === "lottery") {
-    gameArea.innerHTML = `
-      <h2>🎲 Lottery</h2>
-      <button onclick="playLottery()">Play Lottery</button>
-      <p>Try your luck and win huge rewards!</p>
-    `;
-  } else if (game === "coinflip") {
-    gameArea.innerHTML = `
-      <h2>🪙 Coinflip</h2>
-      <p>Pick a side: Red or Blue</p>
-      <button onclick="flipCoin('red')">Red</button>
-      <button onclick="flipCoin('blue')">Blue</button>
-      <p class="coinflip">Bet: 5 Coins</p>
-    `;
-  }
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  background-color: #161b22;
+  border-bottom: 1px solid #30363d;
 }
 
-// Coinflip Game Mode (Red or Blue)
-function flipCoin(side) {
-  if (balance < 5) {
-    alert("Not enough coins to play!");
-    return;
-  }
-
-  balance -= 5;
-  updateBalanceDisplay();
-
-  const result = Math.random() < 0.5 ? "red" : "blue";
-  alert(result === side ? "You Win!" : "You Lose!");
-  if (result === side) balance += 10;  // Win 10 coins
-  updateBalanceDisplay();
+h1 {
+  color: #4fa3fd;
+  font-size: 2rem;
 }
 
-// Lottery Game Mode
-function playLottery() {
-  if (balance < 10) {
-    alert("You need at least 10 coins to play the lottery.");
-    return;
-  }
-
-  balance -= 10;
-  updateBalanceDisplay();
-
-  const winChance = Math.random();
-  if (winChance < 0.2) {
-    alert("You won the lottery! You get 100 coins!");
-    balance += 100;
-  } else {
-    alert("You didn't win this time.");
-  }
-  updateBalanceDisplay();
+.wallet {
+  font-size: 1.1rem;
+  background: #238636;
+  padding: 6px 12px;
+  border-radius: 8px;
 }
 
-// Slots Game Mode
-function playSlots() {
-  if (balance < 5) {
-    alert("You need at least 5 coins to play slots.");
-    return;
-  }
-
-  balance -= 5;
-  updateBalanceDisplay();
-
-  const slotOutcome = Math.random();
-  if (slotOutcome < 0.2) {
-    alert("You hit the jackpot! You won 50 coins!");
-    balance += 50;
-  } else {
-    alert("Better luck next time.");
-  }
-  updateBalanceDisplay();
+nav {
+  background-color: #161b22;
+  padding: 10px;
+  display: flex;
+  gap: 15px;
+  border-bottom: 1px solid #30363d;
 }
 
-// Claim daily reward
-function claimReward() {
-  balance += 10;
-  updateBalanceDisplay();
+nav button {
+  background: #21262d;
+  color: #c9d1d9;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1.1rem;
+  transition: background 0.3s ease;
 }
 
-// Click to Earn Game
-function clickToEarn() {
-  balance += 0.25;
-  updateBalanceDisplay();
+nav button:hover {
+  background: #2ea043;
 }
 
-// Initial load
-switchGame("clicker");
-updateBalanceDisplay();
+main {
+  padding: 40px;
+  text-align: center;
+  flex: 1;
+  background-color: #21262d;
+  border-radius: 8px;
+}
+
+footer {
+  text-align: center;
+  padding: 20px;
+  background: #161b22;
+  color: #8b949e;
+  border-top: 1px solid #30363d;
+}
+
+button {
+  padding: 12px 24px;
+  background-color: #238636;
+  color: #fff;
+  font-size: 1.1rem;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  margin-top: 20px;
+  transition: background 0.3s ease;
+}
+
+button:hover {
+  background-color: #2ea043;
+}
+
+.coinflip button {
+  padding: 10px 30px;
+  background: #238636;
+  color: #fff;
+  font-size: 1.1rem;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.coinflip button:hover {
+  background: #2ea043;
+}
+
+.coin {
+  font-size: 1.2rem;
+  margin-top: 20px;
+}
+
+footer p {
+  font-size: 1rem;
+  color: #8b949e;
+}
+
+.game-area {
+  background: #2f363d;
+  padding: 30px;
+  border-radius: 10px;
+  margin-top: 20px;
+  text-align: center;
+}
+
+.game-button {
+  background-color: #238636;
+  padding: 12px 24px;
+  border-radius: 8px;
+  color: white;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin-top: 20px;
+}
+
+.game-button:hover {
+  background-color: #2ea043;
+}
