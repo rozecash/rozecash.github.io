@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Your App</title>
     <link rel="stylesheet" href="style.css">
+
     <!-- Firebase CDN links -->
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
@@ -38,8 +39,9 @@
 
     <div id="authBox">
         <!-- Auth Box (Login/Signup Form) -->
-        <input type="email" id="emailInput" placeholder="Email" />
+        <input type="text" id="usernameInput" placeholder="Username" />
         <input type="password" id="passwordInput" placeholder="Password" />
+        <input type="file" id="pfpInput" accept="image/*" />
         <button id="signUpBtn">Sign Up</button>
         <button id="loginBtn">Log In</button>
     </div>
