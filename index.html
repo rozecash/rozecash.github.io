@@ -1,39 +1,49 @@
-<!-- index.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Boss Casino</title>
+  <title>BossFlip.GG</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div id="topbar">
-    <h2>💎 Boss Casino</h2>
-    <div id="nav">
-      <button onclick="switchGame('clicker')">Clicker</button>
-      <button onclick="switchGame('slots')">Slots</button>
-      <button onclick="switchGame('rewards')">Rewards</button>
+  <div class="sidebar">
+    <h2>BossFlip.GG</h2>
+    <nav>
+      <button onclick="switchGame('clicker')">🖱️ Clicker</button>
+      <button onclick="switchGame('slots')">🎰 Slots</button>
+      <button onclick="switchGame('rewards')">🏆 Rewards</button>
+    </nav>
+    <div class="bottom-links">
+      <button>Leaderboard</button>
+      <button>Shop</button>
+      <button>Affiliates</button>
     </div>
-    <div id="balance">Balance: $<span id="balanceAmount">1000</span></div>
   </div>
 
-  <div id="content">
-    <div id="clickerGame" class="game">
-      <h3>💵 Clicker Game</h3>
-      <button onclick="clickToEarn()">Click to Earn $50</button>
+  <div class="main">
+    <div class="topbar">
+      <div class="wallet">💰 Balance: $<span id="balanceAmount">1000</span></div>
+      <button class="wallet-button">Wallet</button>
     </div>
 
-    <div id="slotsGame" class="game" style="display: none;">
-      <h3>🎰 Slot Machine (Fake)</h3>
-      <button onclick="playSlots()">Spin (-$100)</button>
-      <p id="slotResult"></p>
-    </div>
+    <div class="game-container">
+      <div id="clickerGame" class="game-card">
+        <h3>💵 Clicker Game</h3>
+        <button onclick="clickToEarn()">Click to Earn $50</button>
+      </div>
 
-    <div id="rewardsGame" class="game" style="display: none;">
-      <h3>🏆 Rewards</h3>
-      <button onclick="claimReward()">Claim $500 Bonus</button>
-      <p id="rewardStatus"></p>
+      <div id="slotsGame" class="game-card" style="display: none;">
+        <h3>🎰 Slot Machine</h3>
+        <button onclick="playSlots()">Spin (-$100)</button>
+        <p id="slotResult"></p>
+      </div>
+
+      <div id="rewardsGame" class="game-card" style="display: none;">
+        <h3>🏆 Rewards</h3>
+        <button onclick="claimReward()">Claim $500 Bonus</button>
+        <p id="rewardStatus"></p>
+      </div>
     </div>
   </div>
 
