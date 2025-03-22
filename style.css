@@ -1,198 +1,195 @@
-/* Reset some default browser styles */
+/* Reset & base styling */
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Roboto', sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-/* Body Style */
 body {
-    background-color: #1c1c3c;
-    color: white;
-    font-family: 'Roboto', sans-serif;
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #0b0f1c;
+  color: #e1e1e1;
+  overflow-x: hidden;
 }
 
-/* Glowing Button Style */
-button {
-    background: linear-gradient(45deg, #7c4dff, #9c27b0);
-    border: none;
-    border-radius: 8px;
-    padding: 14px 28px;
-    color: white;
-    font-size: 16px;
-    cursor: pointer;
-    outline: none;
-    transition: all 0.3s ease-in-out;
-    box-shadow: 0 0 10px rgba(255, 0, 255, 0.7), 0 0 20px rgba(255, 0, 255, 0.5);
+/* Header */
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 30px;
+  background-color: #161b2f;
+  border-bottom: 1px solid #2b2f4a;
 }
 
-button:hover {
-    background: linear-gradient(45deg, #9c27b0, #7c4dff);
-    box-shadow: 0 0 30px rgba(255, 0, 255, 1), 0 0 40px rgba(255, 0, 255, 0.7);
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
-/* Form and Profile Section */
-#authForm, #profileSection, #admin-panel {
-    background-color: rgba(0, 0, 0, 0.7);
-    border-radius: 10px;
-    padding: 20px;
-    margin: 10px;
-    width: 320px;
-    text-align: center;
-    box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+.pfp {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #6c63ff;
 }
 
-input[type="email"], input[type="password"], input[type="file"] {
-    background-color: #333;
-    color: white;
-    border: 1px solid #444;
-    border-radius: 8px;
-    padding: 12px;
-    margin: 10px 0;
-    width: 100%;
-    outline: none;
-    box-shadow: 0 0 5px rgba(255, 0, 255, 0.3);
+/* Navigation */
+nav {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  padding: 10px 0;
+  background-color: #1c2238;
+  border-bottom: 1px solid #2b2f4a;
 }
 
-input[type="email"]:focus, input[type="password"]:focus {
-    border-color: #7c4dff;
-    box-shadow: 0 0 10px rgba(255, 0, 255, 0.6);
+nav button {
+  background: #272d4a;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 10px;
+  color: #fff;
+  cursor: pointer;
+  transition: background 0.2s ease;
 }
 
-/* Header and Links */
-#header {
-    background-color: #1a1a2e;
-    padding: 20px;
-    text-align: center;
-    width: 100%;
-    color: white;
+nav button:hover {
+  background: #6c63ff;
 }
 
-a {
-    color: #9c27b0;
-    text-decoration: none;
-    transition: all 0.3s ease;
+/* Main layout */
+main {
+  display: flex;
+  padding: 20px;
+  gap: 20px;
 }
 
-a:hover {
-    color: #7c4dff;
+/* Game area */
+#gameArea {
+  flex: 2;
+  background-color: #14182c;
+  border-radius: 10px;
+  padding: 20px;
+  min-height: 400px;
+  box-shadow: 0 0 10px #1f2338;
+  animation: fadeIn 0.5s ease;
 }
 
-/* Profile Section */
-#profileSection {
-    display: none;
-    background-color: rgba(0, 0, 0, 0.9);
-    border-radius: 10px;
-    padding: 30px;
-    width: 320px;
-    text-align: center;
+/* Chat area */
+#chatArea {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background-color: #191d33;
+  border-radius: 10px;
+  padding: 15px;
+  max-height: 450px;
+  overflow: hidden;
+  box-shadow: 0 0 10px #1f2338;
 }
 
-#profile-pic {
-    border-radius: 50%;
-    width: 100px;
-    height: 100px;
-    object-fit: cover;
-    margin-bottom: 15px;
-    border: 2px solid #7c4dff;
-    box-shadow: 0 0 10px rgba(255, 0, 255, 0.7);
+#chatMessages {
+  flex: 1;
+  overflow-y: auto;
+  margin-bottom: 10px;
+  padding-right: 5px;
+  max-height: 350px;
 }
 
-#username {
-    font-size: 18px;
-    margin-bottom: 15px;
-    font-weight: bold;
-    text-transform: capitalize;
+#chatMessages p {
+  margin-bottom: 8px;
+  padding: 6px 10px;
+  background-color: #2b2f4a;
+  border-radius: 6px;
+  word-wrap: break-word;
+  animation: fadeInUp 0.3s ease;
 }
 
-/* Admin Panel */
-#admin-panel {
-    display: none;
-    background-color: rgba(0, 0, 0, 0.8);
-    padding: 20px;
-    border-radius: 10px;
-    width: 320px;
-    text-align: center;
+#chatInput {
+  padding: 10px;
+  border: none;
+  border-radius: 8px;
+  outline: none;
+  width: calc(100% - 80px);
+  margin-right: 10px;
+  background-color: #2f3658;
+  color: #fff;
 }
 
-#admin-panel input {
-    background-color: #333;
-    color: white;
-    border: 1px solid #444;
-    border-radius: 8px;
-    padding: 12px;
-    margin: 10px 0;
-    width: 100%;
-    outline: none;
-    box-shadow: 0 0 5px rgba(255, 0, 255, 0.3);
+#chatArea button {
+  padding: 10px;
+  background-color: #6c63ff;
+  border: none;
+  color: #fff;
+  border-radius: 8px;
+  cursor: pointer;
 }
 
-#admin-panel button {
-    background-color: #7c4dff;
-    color: white;
-    padding: 12px;
-    border-radius: 8px;
-    width: 100%;
-    cursor: pointer;
+/* Auth container */
+.auth-box {
+  max-width: 400px;
+  margin: 80px auto;
+  padding: 30px;
+  background-color: #1c2238;
+  border-radius: 12px;
+  box-shadow: 0 0 20px rgba(108, 99, 255, 0.3);
+  text-align: center;
 }
 
-#admin-panel button:hover {
-    background-color: #9c27b0;
+.auth-box input {
+  display: block;
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+  border: none;
+  border-radius: 8px;
+  background: #2f3658;
+  color: white;
 }
 
-/* Dark Theme for the page */
-.dark-theme {
-    background-color: #1c1c3c;
-    color: white;
+.auth-box button {
+  width: 48%;
+  margin: 5px 1%;
+  padding: 10px;
+  border: none;
+  background-color: #6c63ff;
+  color: white;
+  border-radius: 8px;
+  cursor: pointer;
 }
 
-/* Glow Effects */
-.glow {
-    text-shadow: 0 0 10px rgba(255, 0, 255, 0.7), 0 0 20px rgba(255, 0, 255, 0.5);
+/* Footer */
+footer {
+  text-align: center;
+  padding: 20px;
+  background: #161b2f;
+  color: #aaa;
+  font-size: 0.9rem;
+  border-top: 1px solid #2b2f4a;
 }
 
-/* Balance Section */
-#balance {
-    font-size: 20px;
-    margin-top: 20px;
-    font-weight: bold;
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-#balance span {
-    color: #9c27b0;
-    font-size: 24px;
-}
-
-/* Hover Effect for Admin Panel */
-#admin-panel input:focus, #admin-panel button:focus {
-    outline: none;
-    border: 1px solid #7c4dff;
-    box-shadow: 0 0 10px rgba(255, 0, 255, 0.6);
-}
-
-/* Dark Navigation Bar */
-#navBar {
-    background-color: #1a1a2e;
-    padding: 15px;
-    width: 100%;
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 100;
-}
-
-#navBar a {
-    color: white;
-    margin: 0 15px;
-    font-size: 18px;
-}
-
-#navBar a:hover {
-    color: #9c27b0;
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
