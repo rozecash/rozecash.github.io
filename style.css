@@ -19,6 +19,11 @@ header {
   background: #238636;
   padding: 6px 12px;
   border-radius: 8px;
+  transition: background 0.3s;
+}
+
+.wallet:hover {
+  background: #2ea043;
 }
 
 nav {
@@ -37,6 +42,12 @@ nav button {
   border-radius: 8px;
   cursor: pointer;
   font-size: 1rem;
+  transition: background 0.3s, transform 0.2s;
+}
+
+nav button:hover {
+  background: #238636;
+  transform: scale(1.05);
 }
 
 main {
@@ -50,4 +61,19 @@ footer {
   background: #161b22;
   color: #8b949e;
   border-top: 1px solid #30363d;
+}
+
+button {
+  padding: 12px 24px;
+  background-color: #238636;
+  color: #fff;
+  font-size: 1.1rem;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  margin-top: 20px;
+}
+
+button:hover {
+  background-color: #2ea043;
 }
