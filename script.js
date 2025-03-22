@@ -13,44 +13,50 @@ function switchGame(game) {
 
   if (game === "clicker") {
     gameArea.innerHTML = `
-      <h2>🖱️ Click to Earn</h2>
-      <button onclick="clickToEarn()">Click Me</button>
-      <p>Click to earn coins. Each click gives you 0.25 coins.</p>
+      <div class="game-area">
+        <h2>🖱️ Click to Earn</h2>
+        <button class="game-button" onclick="clickToEarn()">Click Me</button>
+        <p>Click to earn coins. Each click gives you 0.25 coins.</p>
+      </div>
     `;
   } else if (game === "slots") {
     gameArea.innerHTML = `
-      <h2>🎰 Slots (Coming Soon)</h2>
-      <p>Spin the slots to (maybe) win big!</p>
+      <div class="game-area">
+        <h2>🎰 Slots</h2>
+        <button class="game-button" onclick="playSlots()">Spin Slots</button>
+        <p>Spin the slots to (maybe) win big!</p>
+      </div>
     `;
   } else if (game === "reward") {
     gameArea.innerHTML = `
-      <h2>🎁 Daily Reward</h2>
-      <button onclick="claimReward()">Claim 10 Coins</button>
-      <p>Come back daily to claim a reward!</p>
+      <div class="game-area">
+        <h2>🎁 Daily Reward</h2>
+        <button class="game-button" onclick="claimReward()">Claim 10 Coins</button>
+        <p>Come back daily to claim a reward!</p>
+      </div>
     `;
   } else if (game === "lottery") {
     gameArea.innerHTML = `
-      <h2>🎲 Lottery (Coming Soon)</h2>
-      <p>Enter the lottery for a chance to win a huge reward!</p>
+      <div class="game-area">
+        <h2>🎲 Lottery</h2>
+        <button class="game-button" onclick="playLottery()">Play Lottery</button>
+        <p>Try your luck and win huge rewards!</p>
+      </div>
     `;
   } else if (game === "coinflip") {
     gameArea.innerHTML = `
-      <h2>🪙 Coinflip</h2>
-      <p>Pick a side: Heads or Tails</p>
-      <button onclick="flipCoin('heads')">Heads</button>
-      <button onclick="flipCoin('tails')">Tails</button>
-      <p class="coinflip">Bet: 5 Coins</p>
-    `;
-  } else if (game === "multiplayerCoinflip") {
-    gameArea.innerHTML = `
-      <h2>🤝 Multiplayer Coinflip</h2>
-      <p>Join a coinflip with other players!</p>
-      <button onclick="joinMultiplayerGame()">Join Game</button>
+      <div class="game-area coinflip">
+        <h2>🪙 Coinflip</h2>
+        <p>Pick a side: Red or Blue</p>
+        <button class="game-button" onclick="flipCoin('red')">Red</button>
+        <button class="game-button" onclick="flipCoin('blue')">Blue</button>
+        <p class="coin">Bet: 5 Coins</p>
+      </div>
     `;
   }
 }
 
-// Coinflip Game Mode (Single-player)
+// Coinflip Game Mode (Red or Blue)
 function flipCoin(side) {
   if (balance < 5) {
     alert("Not enough coins to play!");
@@ -60,34 +66,48 @@ function flipCoin(side) {
   balance -= 5;
   updateBalanceDisplay();
 
-  const result = Math.random() < 0.5 ? "heads" : "tails";
+  const result = Math.random() < 0.5 ? "red" : "blue";
   alert(result === side ? "You Win!" : "You Lose!");
   if (result === side) balance += 10;  // Win 10 coins
   updateBalanceDisplay();
 }
 
-// Multiplayer Coinflip Mode (Join a game)
-function joinMultiplayerGame() {
+// Lottery Game Mode
+function playLottery() {
   if (balance < 10) {
-    alert("You need at least 10 coins to join a multiplayer game.");
+    alert("You need at least 10 coins to play the lottery.");
     return;
   }
 
-  const otherPlayerChoice = Math.random() < 0.5 ? "heads" : "tails";  // Simulate other player's choice
-  const userChoice = prompt("Pick your side: heads or tails");
+  balance -= 10;
+  updateBalanceDisplay();
 
-  if (userChoice !== "heads" && userChoice !== "tails") {
-    alert("Invalid choice. Please select heads or tails.");
-    return;
-  }
-
-  const result = Math.random() < 0.5 ? "heads" : "tails";
-  if (result === userChoice) {
-    alert("You won the multiplayer game!");
-    balance += 20;  // Reward for winning
+  const winChance = Math.random();
+  if (winChance < 0.2) {
+    alert("You won the lottery! You get 100 coins!");
+    balance += 100;
   } else {
-    alert("You lost the multiplayer game.");
-    balance -= 10;  // Deduct coins for losing
+    alert("You didn't win this time.");
+  }
+  updateBalanceDisplay();
+}
+
+// Slots Game Mode
+function playSlots() {
+  if (balance < 5) {
+    alert("You need at least 5 coins to play slots.");
+    return;
+  }
+
+  balance -= 5;
+  updateBalanceDisplay();
+
+  const slotOutcome = Math.random();
+  if (slotOutcome < 0.2) {
+    alert("You hit the jackpot! You won 50 coins!");
+    balance += 50;
+  } else {
+    alert("Better luck next time.");
   }
   updateBalanceDisplay();
 }
