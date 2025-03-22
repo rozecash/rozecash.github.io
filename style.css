@@ -1,8 +1,10 @@
+/* General Styling */
 body {
   margin: 0;
   font-family: 'Segoe UI', sans-serif;
-  background-color: #2d2b5b;
-  color: #c9d1d9;
+  background-color: #1a1a2e;
+  color: #f8f9fa;
+  transition: all 0.3s ease-in-out;
 }
 
 header {
@@ -10,68 +12,105 @@ header {
   justify-content: space-between;
   align-items: center;
   padding: 20px;
-  background-color: #161b22;
-  border-bottom: 1px solid #30363d;
+  background-color: #3a0ca3;
+  border-bottom: 2px solid #533ede;
 }
 
 .wallet {
-  font-size: 1.1rem;
-  background: #238636;
-  padding: 6px 12px;
-  border-radius: 8px;
+  font-size: 1.2rem;
+  background: #4a4e69;
+  padding: 8px 15px;
+  border-radius: 10px;
 }
 
 nav {
-  background-color: #161b22;
+  background-color: #3a0ca3;
   padding: 10px;
   display: flex;
-  gap: 15px;
-  border-bottom: 1px solid #30363d;
+  gap: 10px;
+  border-bottom: 2px solid #533ede;
 }
 
 nav button {
-  background: #21262d;
-  color: #c9d1d9;
+  background: #4a4e69;
+  color: #f8f9fa;
   padding: 10px 20px;
   border: none;
-  border-radius: 8px;
+  border-radius: 10px;
   cursor: pointer;
   font-size: 1rem;
+  transition: transform 0.2s ease-in-out;
+}
+
+nav button:hover {
+  transform: scale(1.1);
 }
 
 main {
   padding: 40px;
   text-align: center;
+  animation: fadeIn 0.5s ease-in-out;
 }
 
-#chat {
-  position: fixed;
-  bottom: 10px;
-  right: 10px;
-  background-color: #161b22;
-  padding: 10px;
-  border-radius: 8px;
-  width: 250px;
-}
-
-#chatBox {
-  max-height: 200px;
-  overflow-y: auto;
-  margin-bottom: 10px;
-}
-
-#chat input {
-  width: calc(100% - 20px);
-  padding: 5px;
-  margin-bottom: 5px;
-  border-radius: 8px;
-  border: none;
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 footer {
   text-align: center;
   padding: 20px;
-  background: #161b22;
-  color: #8b949e;
-  border-top: 1px solid #30363d;
+  background: #4a4e69;
+  color: #f8f9fa;
+  border-top: 2px solid #533ede;
+}
+
+/* Auth and Chat Styling */
+#authContainer {
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+  display: flex;
+  gap: 10px;
+}
+
+.chat-box {
+  position: fixed;
+  right: 10px;
+  bottom: 60px;
+  width: 300px;
+  background: #533ede;
+  color: #fff;
+  border-radius: 10px;
+  padding: 15px;
+  overflow-y: auto;
+  max-height: 200px;
+}
+
+.chat-input {
+  display: flex;
+  margin-top: 10px;
+}
+
+.chat-input input {
+  flex: 1;
+  border-radius: 5px;
+  border: none;
+  padding: 5px;
+}
+
+.chat-input button {
+  margin-left: 5px;
+  border-radius: 5px;
+  padding: 5px 10px;
+  border: none;
+  background: #3a0ca3;
+  color: #fff;
+  cursor: pointer;
 }
