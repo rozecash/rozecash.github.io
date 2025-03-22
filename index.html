@@ -3,31 +3,40 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>FreeFlipFake Gambling</title>
+  <title>FreeFlipFake - Gambling</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+  <!-- Header Section -->
   <header>
     <h1>🎰 FreeFlipFake</h1>
-    <div class="wallet">Balance: <span id="balance">0</span> 🪙</div>
+    <div class="wallet">Balance: <span id="balance">100</span> 🪙</div>
   </header>
 
+  <!-- Navigation Section -->
   <nav>
     <button onclick="switchGame('clicker')">🖱️ Clicker</button>
     <button onclick="switchGame('slots')">🎰 Slots</button>
-    <button onclick="switchGame('reward')">🎁 Rewards</button>
-    <button onclick="switchGame('lottery')">🎲 Lottery</button>
     <button onclick="switchGame('coinflip')">🪙 Coinflip</button>
+    <button onclick="switchGame('lottery')">🎲 Lottery</button>
   </nav>
 
+  <!-- Main Content Section -->
   <main id="gameArea">
-    <!-- Game content will load dynamically here -->
+    <!-- Default game loaded here -->
   </main>
 
+  <!-- Chat Section -->
+  <div class="chat-container">
+    <div class="chat-box" id="chatBox"></div>
+    <input class="chat-input" id="chatInput" type="text" placeholder="Chat here..." />
+  </div>
+
+  <!-- Footer Section -->
   <footer>
-    <p>&copy; 2025 FreeFlipFake</p>
+    <p>&copy; 2025 FreeFlipFake. Not a real gambling site.</p>
   </footer>
 
-  <script src="script.js" defer></script>
+  <script src="script.js"></script>
 </body>
 </html>
