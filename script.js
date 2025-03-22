@@ -1,13 +1,14 @@
 // Initialize Firebase
 const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_AUTH_DOMAIN",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_STORAGE_BUCKET",
-  messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-  appId: "YOUR_APP_ID"
+  apiKey: "AIzaSyAmJNWl_5VFaUQwjzMjBKbX6ZoLxdr5mko",
+  authDomain: "fakefreeflipdatabase.firebaseapp.com",
+  projectId: "fakefreeflipdatabase",
+  storageBucket: "fakefreeflipdatabase.firebasestorage.app",
+  messagingSenderId: "127508082386",
+  appId: "1:127508082386:web:883c2be8b481b3c6e5870b"
 };
 
+// Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const db = firebase.firestore();
