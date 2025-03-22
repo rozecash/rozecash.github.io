@@ -70,7 +70,7 @@ function showMainUI() {
 
   if (authBox && usernameDisplay && logoutBtn) {
     authBox.style.display = "none"; // Hide login tab
-    usernameDisplay.innerText = user.displayName || "User"; // Update username
+    usernameDisplay.innerText = user?.displayName || "User"; // Update username
     logoutBtn.style.display = "block"; // Show logout button
   }
 
@@ -184,72 +184,62 @@ function loadUserProfile() {
     });
 }
 
-// Autoclicker functionality
-document.getElementById("clickerBtn").addEventListener("click", () => {
-  balance += 1;
-  updateBalanceDisplay();
-  showNotification("+1 coin!", "success");
-});
-
-// Coinflip game
-document.getElementById("coinflipGameBtn").addEventListener("click", () => {
-  const gameArea = document.getElementById("gameArea");
-  gameArea.innerHTML = `
-    <h2>🪙 Coinflip</h2>
-    <p>Select a side and flip the coin!</p>
-    <button id="coinflipBtn">Flip Coin</button>
-  `;
-  gameArea.style.display = "block";
-
-  document.getElementById("coinflipBtn").addEventListener("click", () => {
-    const flipResult = Math.random() > 0.5 ? "Heads" : "Tails";
-    showNotification(`You flipped: ${flipResult}`, "info");
-  });
-});
-
-// Chat functionality
-document.getElementById("sendMessageButton").addEventListener("click", () => {
-  const message = document.getElementById("chatInput").value;
-  if (message.trim() === "") return;
-
-  if (!user) {
-    showNotification("You must be logged in to send messages.", "error");
-    return;
-  }
-
-  addDoc(collection(db, "chat"), {
-    message: message,
-    timestamp: Date.now(),
-    username: user.displayName || "Anonymous",
-  })
-    .then(() => {
-      document.getElementById("chatInput").value = "";
-    })
-    .catch((error) => {
-      showNotification("Error sending message: " + error.message, "error");
-    });
-});
-
-// Load chat messages
-onSnapshot(collection(db, "chat"), orderBy("timestamp"), (snapshot) => {
-  const chatMessages = document.getElementById("chatMessages");
-  chatMessages.innerHTML = "";
-  snapshot.forEach((doc) => {
-    const data = doc.data();
-    chatMessages.innerHTML += `<p><strong>${data.username}:</strong> ${data.message}</p>`;
-  });
-});
-
 // Event listeners for buttons
 document.addEventListener("DOMContentLoaded", () => {
-  document.getElementById("loginBtn").addEventListener("click", login);
-  document.getElementById("signUpBtn").addEventListener("click", register);
-  document.getElementById("logoutBtn").addEventListener("click", logout);
+  document.getElementById("loginBtn")?.addEventListener("click", login);
+  document.getElementById("signUpBtn")?.addEventListener("click", register);
+  document.getElementById("logoutBtn")?.addEventListener("click", logout);
 
   // Navigation buttons
-  document.getElementById("homeBtn").addEventListener("click", () => showPage("homePage"));
-  document.getElementById("gamesBtn").addEventListener("click", () => showPage("gamesPage"));
-  document.getElementById("profileBtn").addEventListener("click", () => showPage("profilePage"));
+  document.getElementById("homeBtn")?.addEventListener("click", () => showPage("homePage"));
+  document.getElementById("gamesBtn")?.addEventListener("click", () => showPage("gamesPage"));
+  document.getElementById("profileBtn")?.addEventListener("click", () => showPage("profilePage"));
+
+  // Coinflip game button
+  document.getElementById("coinflipGameBtn")?.addEventListener("click", () => {
+    const gameArea = document.getElementById("gameArea");
+    gameArea.innerHTML = `
+      <h2>🪙 Coinflip</h2>
+      <p>Select a side and flip the coin!</p>
+      <button id="coinflipBtn">Flip Coin</button>
+    `;
+    gameArea.style.display = "block";
+
+    document.getElementById("coinflipBtn")?.addEventListener("click", () => {
+      const flipResult = Math.random() > 0.5 ? "Heads" : "Tails";
+      showNotification(`You flipped: ${flipResult}`, "info");
+    });
+  });
+
+  // Autoclicker functionality
+  document.getElementById("clickerBtn")?.addEventListener("click", () => {
+    balance += 1;
+    updateBalanceDisplay();
+    showNotification("+1 coin!", "success");
+  });
+
+  // Chat functionality
+  document.getElementById("sendMessageButton")?.addEventListener("click", () => {
+    const message = document.getElementById("chatInput").value;
+    if (message.trim() === "") return;
+
+    if (!user) {
+      showNotification("You must be logged in to send messages.", "error");
+      return;
+    }
+
+    addDoc(collection(db, "chat"), {
+      message: message,
+      timestamp: Date.now(),
+      username: user.displayName || "Anonymous",
+    })
+      .then(() => {
+        document.getElementById("chatInput").value = "";
+      })
+      .catch((error) => {
+        showNotification("Error sending message: " + error.message, "error");
+      });
+  });
 });
 
 // Update balance display on page load
