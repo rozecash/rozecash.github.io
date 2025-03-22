@@ -1,4 +1,3 @@
-// Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyAmJNWl_5VFaUQwjzMjBKbX6ZoLxdr5mko",
   authDomain: "fakefreeflipdatabase.firebaseapp.com",
@@ -10,163 +9,152 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-firebase.initializeApp(firebaseConfig);
-
-// Get Firebase services
+const app = firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
-const firestore = firebase.firestore();
+const db = firebase.firestore();
 const storage = firebase.storage();
 
-// DOM Elements
-const loginLink = document.getElementById('loginLink');
-const registerLink = document.getElementById('registerLink');
-const loginForm = document.getElementById('loginForm');
-const registerForm = document.getElementById('registerForm');
-const profileSection = document.getElementById('profileSection');
-const usernameElement = document.getElementById('username');
-const profilePicElement = document.getElementById('profile-pic');
-const adminPanel = document.getElementById('admin-panel');
-const usernameInput = document.getElementById('usernameInput');
-const amountInput = document.getElementById('amountInput');
-const updateBalanceForm = document.getElementById('updateBalanceForm');
-const profilePicInput = document.getElementById('profilePicInput');
-const loginEmail = document.getElementById('loginEmail');
-const loginPassword = document.getElementById('loginPassword');
-const registerEmail = document.getElementById('registerEmail');
-const registerPassword = document.getElementById('registerPassword');
-const loginButton = document.getElementById('loginButton');
-const registerButton = document.getElementById('registerButton');
+// DOM elements
+const authBox = document.getElementById('authBox');
+const signUpBtn = document.getElementById('signUpBtn');
+const loginBtn = document.getElementById('loginBtn');
+const emailInput = document.getElementById('emailInput');
+const passwordInput = document.getElementById('passwordInput');
+const sendMessageButton = document.getElementById('sendMessageButton');
+const chatInput = document.getElementById('chatInput');
+const usernameDisplay = document.getElementById('username');
+const pfpDisplay = document.querySelector('.pfp');
+const gameArea = document.getElementById('gameArea');
 
-// Switch between login and register forms
-loginLink.addEventListener('click', () => {
-    loginForm.style.display = 'block';
-    registerForm.style.display = 'none';
+// Sign Up functionality
+signUpBtn.addEventListener('click', async () => {
+  const email = emailInput.value;
+  const password = passwordInput.value;
+
+  try {
+    const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+    const user = userCredential.user;
+    
+    // Create user document in Firestore
+    await db.collection('users').doc(user.uid).set({
+      email: email,
+      balance: 0, // Default balance
+      profilePicture: 'default.jpg' // Default profile picture
+    });
+
+    // Update UI after successful sign-up
+    usernameDisplay.textContent = user.email;
+    pfpDisplay.src = 'path/to/default.jpg'; // Default profile picture
+
+    authBox.style.display = 'none'; // Hide authentication box after sign-up
+
+  } catch (error) {
+    alert(error.message);
+  }
 });
 
-registerLink.addEventListener('click', () => {
-    registerForm.style.display = 'block';
-    loginForm.style.display = 'none';
+// Login functionality
+loginBtn.addEventListener('click', async () => {
+  const email = emailInput.value;
+  const password = passwordInput.value;
+
+  try {
+    const userCredential = await auth.signInWithEmailAndPassword(email, password);
+    const user = userCredential.user;
+
+    // Retrieve user data from Firestore
+    const userDoc = await db.collection('users').doc(user.uid).get();
+    const userData = userDoc.data();
+
+    // Update UI after successful login
+    usernameDisplay.textContent = user.email;
+    pfpDisplay.src = userData.profilePicture; // Use the stored profile picture URL
+
+    authBox.style.display = 'none'; // Hide authentication box after login
+
+  } catch (error) {
+    alert(error.message);
+  }
 });
 
-// Register New User
-registerButton.addEventListener('click', async () => {
-    const email = registerEmail.value;
-    const password = registerPassword.value;
-    const file = profilePicInput.files[0];
+// Send message functionality for chat
+sendMessageButton.addEventListener('click', async () => {
+  const message = chatInput.value;
+  if (message.trim() === '') return;
 
-    if (email && password && file) {
-        try {
-            // Create user
-            const userCredential = await auth.createUserWithEmailAndPassword(email, password);
-            const user = userCredential.user;
+  const currentUser = auth.currentUser;
+  if (currentUser) {
+    const messageData = {
+      text: message,
+      sender: currentUser.email,
+      timestamp: firebase.firestore.FieldValue.serverTimestamp()
+    };
 
-            // Upload Profile Picture
-            const storageRef = storage.ref(`profile_pics/${user.uid}`);
-            await storageRef.put(file);
-            const profilePicURL = await storageRef.getDownloadURL();
-
-            // Save user data to Firestore
-            await firestore.collection('users').doc(user.uid).set({
-                email: email,
-                profilePic: profilePicURL,
-                balance: 0 // Initial balance is set to 0
-            });
-
-            alert("Account created successfully!");
-            // Automatically log in after registration
-            loginUser(email, password);
-        } catch (error) {
-            alert("Error: " + error.message);
-        }
-    } else {
-        alert("Please fill out all fields.");
-    }
+    // Save message to Firestore
+    await db.collection('chat').add(messageData);
+    chatInput.value = ''; // Clear input after sending message
+  }
 });
 
-// Login Existing User
-loginButton.addEventListener('click', async () => {
-    const email = loginEmail.value;
-    const password = loginPassword.value;
+// Listen for new chat messages
+db.collection('chat')
+  .orderBy('timestamp', 'asc')
+  .onSnapshot(snapshot => {
+    const chatMessages = document.getElementById('chatMessages');
+    chatMessages.innerHTML = ''; // Clear previous messages
+    snapshot.forEach(doc => {
+      const messageData = doc.data();
+      const messageElement = document.createElement('p');
+      messageElement.textContent = `${messageData.sender}: ${messageData.text}`;
+      chatMessages.appendChild(messageElement);
+    });
+  });
 
-    if (email && password) {
-        loginUser(email, password);
-    } else {
-        alert("Please enter your email and password.");
-    }
-});
+// Admin Panel: Add balance to any user
+const addBalance = async (uid, amount) => {
+  const userDoc = await db.collection('users').doc(uid).get();
+  if (userDoc.exists) {
+    const currentBalance = userDoc.data().balance;
+    const newBalance = currentBalance + amount;
 
-async function loginUser(email, password) {
-    try {
-        // Log in user
-        await auth.signInWithEmailAndPassword(email, password);
-        alert("Logged in successfully!");
-        loadUserData();
-    } catch (error) {
-        alert("Error: " + error.message);
-    }
-}
+    // Update balance in Firestore
+    await db.collection('users').doc(uid).update({
+      balance: newBalance
+    });
 
-// Load User Data
-function loadUserData() {
-    const user = auth.currentUser;
+    alert('Balance updated successfully!');
+  } else {
+    alert('User not found!');
+  }
+};
 
-    if (user) {
-        // Show profile section
-        profileSection.style.display = 'block';
-        usernameElement.innerText = user.email;
+// Example: Add 100 balance to a user with a specific UID (replace with dynamic data)
+const exampleUid = 'USER_UID'; // Replace with the actual UID
+addBalance(exampleUid, 100);
 
-        // Display profile picture
-        firestore.collection('users').doc(user.uid).get().then(doc => {
-            const userData = doc.data();
-            profilePicElement.src = userData.profilePic;
-        });
-
-        // Check if the logged-in user is 'a1xsas' for admin panel access
-        if (user.email === 'a1xsas') {
-            adminPanel.style.display = 'block';
-        }
-
-        // Hide auth form
-        document.getElementById('authForm').style.display = 'none';
-    }
-}
-
-// Admin Panel: Update balance
-updateBalanceForm.addEventListener('submit', async (event) => {
-    event.preventDefault();
-
-    const username = usernameInput.value;
-    const amount = parseInt(amountInput.value);
-
-    if (username && amount) {
-        try {
-            const userSnapshot = await firestore.collection('users').where('email', '==', username).get();
-
-            if (!userSnapshot.empty) {
-                const userDoc = userSnapshot.docs[0];
-                const userRef = userDoc.ref;
-                await userRef.update({
-                    balance: firebase.firestore.FieldValue.increment(amount)
-                });
-
-                alert(`Balance for ${username} updated by ${amount}.`);
-            } else {
-                alert("User not found.");
-            }
-        } catch (error) {
-            alert("Error: " + error.message);
-        }
-    } else {
-        alert("Please provide valid username and amount.");
-    }
-});
-
-// Logout User
+// Listen for Auth state changes (Login/Logout)
 auth.onAuthStateChanged(user => {
-    if (!user) {
-        // Show auth form if no user is logged in
-        document.getElementById('authForm').style.display = 'block';
-        profileSection.style.display = 'none';
-        adminPanel.style.display = 'none';
-    }
+  if (user) {
+    // User is logged in
+    console.log('User logged in:', user.email);
+    usernameDisplay.textContent = user.email;
+    pfpDisplay.src = 'path/to/user/pfp.jpg'; // Dynamic profile picture
+    authBox.style.display = 'none';
+  } else {
+    // No user is logged in
+    console.log('User logged out');
+    authBox.style.display = 'block';
+    usernameDisplay.textContent = 'Guest';
+    pfpDisplay.src = 'path/to/default.jpg'; // Default profile picture
+  }
 });
+
+// Log out functionality
+const logout = async () => {
+  try {
+    await auth.signOut();
+    alert('You have logged out!');
+  } catch (error) {
+    alert(error.message);
+  }
+};
