@@ -129,7 +129,7 @@ main {
 }
 
 /* Auth container */
-.auth-box {
+#authBox {
   max-width: 400px;
   margin: 80px auto;
   padding: 30px;
@@ -139,7 +139,7 @@ main {
   text-align: center;
 }
 
-.auth-box input {
+#authBox input {
   display: block;
   width: 100%;
   padding: 12px;
@@ -150,7 +150,7 @@ main {
   color: white;
 }
 
-.auth-box button {
+#authBox button {
   width: 48%;
   margin: 5px 1%;
   padding: 10px;
