@@ -1,169 +1,171 @@
-// Firebase configuration object (unchanged)
+// Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyAmJNWl_5VFaUQwjzMjBKbX6ZoLxdr5mko",
-  authDomain: "fakefreeflipdatabase.firebaseapp.com",
-  projectId: "fakefreeflipdatabase",
-  storageBucket: "fakefreeflipdatabase.firebasestorage.app",
-  messagingSenderId: "127508082386",
-  appId: "1:127508082386:web:883c2be8b481b3c6e5870b",
-  measurementId: "G-RW520XL4R4"
+    apiKey: "YOUR_API_KEY",
+    authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+    projectId: "YOUR_PROJECT_ID",
+    storageBucket: "YOUR_PROJECT_ID.appspot.com",
+    messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+    appId: "YOUR_APP_ID"
 };
 
-// Firebase imports
-import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
-import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
-import { getStorage } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-storage.js";
-
 // Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
-const storage = getStorage(app);
+firebase.initializeApp(firebaseConfig);
 
-// Global variables
-let user = null;
-let balance = 0;
+// Get Firebase services
+const auth = firebase.auth();
+const firestore = firebase.firestore();
+const storage = firebase.storage();
 
-// Update balance display
-function updateBalanceDisplay() {
-  const balanceElement = document.getElementById("balance");
-  if (balanceElement) {
-    balanceElement.innerText = balance.toFixed(2);
-  } else {
-    console.error("Balance element not found");
-  }
-}
+// DOM Elements
+const loginLink = document.getElementById('loginLink');
+const registerLink = document.getElementById('registerLink');
+const loginForm = document.getElementById('loginForm');
+const registerForm = document.getElementById('registerForm');
+const profileSection = document.getElementById('profileSection');
+const usernameElement = document.getElementById('username');
+const profilePicElement = document.getElementById('profile-pic');
+const adminPanel = document.getElementById('admin-panel');
+const usernameInput = document.getElementById('usernameInput');
+const amountInput = document.getElementById('amountInput');
+const updateBalanceForm = document.getElementById('updateBalanceForm');
+const profilePicInput = document.getElementById('profilePicInput');
+const loginEmail = document.getElementById('loginEmail');
+const loginPassword = document.getElementById('loginPassword');
+const registerEmail = document.getElementById('registerEmail');
+const registerPassword = document.getElementById('registerPassword');
+const loginButton = document.getElementById('loginButton');
+const registerButton = document.getElementById('registerButton');
 
-// Show notifications
-function showNotification(message) {
-  const notificationContainer = document.getElementById("notification-container");
-  const notification = document.createElement("div");
-  notification.classList.add("notification");
-  notification.innerText = message;
-  notificationContainer.appendChild(notification);
-
-  setTimeout(() => {
-    notification.classList.add("fade-out");
-    setTimeout(() => notification.remove(), 500); // Remove after fade-out
-  }, 3000);
-}
-
-// Firebase authentication functions
-function register() {
-  const username = document.getElementById("username").value;
-  const password = document.getElementById("password").value;
-
-  createUserWithEmailAndPassword(auth, username + "@fake.com", password)
-    .then((userCredential) => {
-      user = userCredential.user;
-      showMainUI();
-      saveUserData(username);
-      showNotification("Registration successful!");
-    })
-    .catch((error) => {
-      alert(error.message);
-    });
-}
-
-function login() {
-  const username = document.getElementById("username").value;
-  const password = document.getElementById("password").value;
-
-  signInWithEmailAndPassword(auth, username + "@fake.com", password)
-    .then((userCredential) => {
-      user = userCredential.user;
-      showMainUI();
-      showNotification("Login successful!");
-    })
-    .catch((error) => {
-      alert(error.message);
-    });
-}
-
-function logout() {
-  signOut(auth)
-    .then(() => {
-      user = null;
-      showAuthUI();
-      showNotification("Logged out successfully!");
-    })
-    .catch((error) => {
-      alert(error.message);
-    });
-}
-
-// Update UI based on user authentication status
-onAuthStateChanged(auth, (userCredential) => {
-  if (userCredential) {
-    user = userCredential.user;
-    showMainUI();
-  } else {
-    showAuthUI();
-  }
+// Switch between login and register forms
+loginLink.addEventListener('click', () => {
+    loginForm.style.display = 'block';
+    registerForm.style.display = 'none';
 });
 
-function showMainUI() {
-  const authContainer = document.getElementById("auth-container");
-  const profileContainer = document.getElementById("profile-container");
+registerLink.addEventListener('click', () => {
+    registerForm.style.display = 'block';
+    loginForm.style.display = 'none';
+});
 
-  authContainer.style.display = "none";
-  profileContainer.style.display = "block";
+// Register New User
+registerButton.addEventListener('click', async () => {
+    const email = registerEmail.value;
+    const password = registerPassword.value;
+    const file = profilePicInput.files[0];
 
-  document.getElementById("username-display").innerText = user.displayName || "User";
-  loadUserProfile();
+    if (email && password && file) {
+        try {
+            // Create user
+            const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+            const user = userCredential.user;
+
+            // Upload Profile Picture
+            const storageRef = storage.ref(`profile_pics/${user.uid}`);
+            await storageRef.put(file);
+            const profilePicURL = await storageRef.getDownloadURL();
+
+            // Save user data to Firestore
+            await firestore.collection('users').doc(user.uid).set({
+                email: email,
+                profilePic: profilePicURL,
+                balance: 0 // Initial balance is set to 0
+            });
+
+            alert("Account created successfully!");
+            // Automatically log in after registration
+            loginUser(email, password);
+        } catch (error) {
+            alert("Error: " + error.message);
+        }
+    } else {
+        alert("Please fill out all fields.");
+    }
+});
+
+// Login Existing User
+loginButton.addEventListener('click', async () => {
+    const email = loginEmail.value;
+    const password = loginPassword.value;
+
+    if (email && password) {
+        loginUser(email, password);
+    } else {
+        alert("Please enter your email and password.");
+    }
+});
+
+async function loginUser(email, password) {
+    try {
+        // Log in user
+        await auth.signInWithEmailAndPassword(email, password);
+        alert("Logged in successfully!");
+        loadUserData();
+    } catch (error) {
+        alert("Error: " + error.message);
+    }
 }
 
-function showAuthUI() {
-  const authContainer = document.getElementById("auth-container");
-  const profileContainer = document.getElementById("profile-container");
+// Load User Data
+function loadUserData() {
+    const user = auth.currentUser;
 
-  authContainer.style.display = "block";
-  profileContainer.style.display = "none";
+    if (user) {
+        // Show profile section
+        profileSection.style.display = 'block';
+        usernameElement.innerText = user.email;
+
+        // Display profile picture
+        firestore.collection('users').doc(user.uid).get().then(doc => {
+            const userData = doc.data();
+            profilePicElement.src = userData.profilePic;
+        });
+
+        // Check if the logged-in user is 'a1xsas' for admin panel access
+        if (user.email === 'a1xsas') {
+            adminPanel.style.display = 'block';
+        }
+
+        // Hide auth form
+        document.getElementById('authForm').style.display = 'none';
+    }
 }
 
-// Save user data to Firestore
-function saveUserData(username) {
-  setDoc(doc(db, "users", user.uid), {
-    username: username,
-    balance: 0,
-    profilePicture: null,
-  })
-    .then(() => {
-      updateBalanceDisplay();
-    })
-    .catch((error) => {
-      alert("Error saving user data: " + error.message);
-    });
-}
+// Admin Panel: Update balance
+updateBalanceForm.addEventListener('submit', async (event) => {
+    event.preventDefault();
 
-// Load user profile data
-function loadUserProfile() {
-  const userRef = doc(db, "users", user.uid);
-  getDoc(userRef)
-    .then((docSnap) => {
-      if (docSnap.exists()) {
-        const data = docSnap.data();
-        balance = data.balance;
-        updateBalanceDisplay();
-      }
-    })
-    .catch((error) => {
-      alert("Error loading user profile: " + error.message);
-    });
-}
+    const username = usernameInput.value;
+    const amount = parseInt(amountInput.value);
 
-// Handle game actions
-function claimReward() {
-  balance += 10;
-  updateBalanceDisplay();
-  showNotification("You claimed 10 coins!");
-}
+    if (username && amount) {
+        try {
+            const userSnapshot = await firestore.collection('users').where('email', '==', username).get();
 
-// Event listeners for buttons
-document.getElementById("login-btn").addEventListener("click", login);
-document.getElementById("register-btn").addEventListener("click", register);
-document.getElementById("logout-btn").addEventListener("click", logout);
+            if (!userSnapshot.empty) {
+                const userDoc = userSnapshot.docs[0];
+                const userRef = userDoc.ref;
+                await userRef.update({
+                    balance: firebase.firestore.FieldValue.increment(amount)
+                });
 
-// Update balance display on page load
-updateBalanceDisplay();
+                alert(`Balance for ${username} updated by ${amount}.`);
+            } else {
+                alert("User not found.");
+            }
+        } catch (error) {
+            alert("Error: " + error.message);
+        }
+    } else {
+        alert("Please provide valid username and amount.");
+    }
+});
+
+// Logout User
+auth.onAuthStateChanged(user => {
+    if (!user) {
+        // Show auth form if no user is logged in
+        document.getElementById('authForm').style.display = 'block';
+        profileSection.style.display = 'none';
+        adminPanel.style.display = 'none';
+    }
+});
