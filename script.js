@@ -18,6 +18,8 @@ import {
   signOut,
   onAuthStateChanged,
   updateProfile,
+  setPersistence,
+  browserSessionPersistence,
 } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
 import {
   getFirestore,
@@ -37,6 +39,15 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 const storage = getStorage(app);
+
+// Set session persistence
+setPersistence(auth, browserSessionPersistence)
+  .then(() => {
+    console.log("Session persistence enabled");
+  })
+  .catch((error) => {
+    console.error("Error enabling session persistence:", error);
+  });
 
 // Global variables
 let user = null;
@@ -167,7 +178,7 @@ function saveUserData(username) {
 
   setDoc(doc(db, "users", user.uid), {
     username: username,
-    balance: 0,
+    balance: balance,
     profilePicture: null,
   })
     .then(() => {
@@ -190,7 +201,7 @@ function loadUserProfile() {
     .then((docSnap) => {
       if (docSnap.exists()) {
         const data = docSnap.data();
-        balance = data.balance;
+        balance = data.balance || 0; // Load balance from Firestore
         updateBalanceDisplay();
 
         // Update profile picture
