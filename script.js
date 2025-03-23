@@ -151,6 +151,7 @@ onAuthStateChanged(auth, (userCredential) => {
   if (userCredential) {
     user = userCredential.user;
     showMainUI();
+    loadUserProfile();
   } else {
     user = null; // Reset user object
     showAuthUI();
@@ -191,12 +192,43 @@ function loadUserProfile() {
         const data = docSnap.data();
         balance = data.balance;
         updateBalanceDisplay();
+
+        // Update profile picture
+        const profilePic = document.getElementById("profilePic");
+        if (data.profilePicture) {
+          profilePic.src = data.profilePicture;
+        }
       }
     })
     .catch((error) => {
       showNotification("Error loading user profile: " + error.message, "error");
     });
 }
+
+// Upload profile picture
+document.getElementById("pfpUpload")?.addEventListener("change", (event) => {
+  const file = event.target.files[0];
+  if (!file) return;
+
+  const storageRef = ref(storage, `profilePictures/${user.uid}`);
+  uploadBytes(storageRef, file)
+    .then(() => {
+      return getDownloadURL(storageRef);
+    })
+    .then((downloadURL) => {
+      // Update Firestore with the new profile picture URL
+      return setDoc(doc(db, "users", user.uid), { profilePicture: downloadURL }, { merge: true });
+    })
+    .then(() => {
+      // Update the profile picture on the page
+      const profilePic = document.getElementById("profilePic");
+      profilePic.src = downloadURL;
+      showNotification("Profile picture updated!", "success");
+    })
+    .catch((error) => {
+      showNotification("Error uploading profile picture: " + error.message, "error");
+    });
+});
 
 // Load chat messages
 function loadChat() {
@@ -214,7 +246,10 @@ function loadChat() {
     messages.reverse().forEach((doc) => {
       const data = doc.data();
       const messageElement = document.createElement("p");
-      messageElement.innerHTML = `<strong>${data.username}:</strong> ${data.message}`;
+      messageElement.innerHTML = `
+        <img src="${data.profilePicture || "images/default.jpg"}" alt="Profile Picture" />
+        <strong>${data.username}:</strong> ${data.message}
+      `;
       chatMessages.appendChild(messageElement);
     });
 
@@ -237,6 +272,7 @@ function sendMessage() {
     message: message,
     timestamp: Date.now(),
     username: user.displayName || "Anonymous",
+    profilePicture: user.photoURL || "images/default.jpg",
   })
     .then(() => {
       document.getElementById("chatInput").value = "";
@@ -254,31 +290,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Navigation buttons
   document.getElementById("homeBtn")?.addEventListener("click", () => showPage("homePage"));
-  document.getElementById("gamesBtn")?.addEventListener("click", () => showPage("gamesPage"));
   document.getElementById("profileBtn")?.addEventListener("click", () => showPage("profilePage"));
-
-  // Coinflip game button
-  document.getElementById("coinflipGameBtn")?.addEventListener("click", () => {
-    const gameArea = document.getElementById("gameArea");
-    gameArea.innerHTML = `
-      <h2>🪙 Coinflip</h2>
-      <p>Select a side and flip the coin!</p>
-      <button id="coinflipBtn">Flip Coin</button>
-    `;
-    gameArea.style.display = "block";
-
-    document.getElementById("coinflipBtn")?.addEventListener("click", () => {
-      const flipResult = Math.random() > 0.5 ? "Heads" : "Tails";
-      showNotification(`You flipped: ${flipResult}`, "info");
-    });
-  });
-
-  // Autoclicker functionality
-  document.getElementById("clickerBtn")?.addEventListener("click", () => {
-    balance += 1;
-    updateBalanceDisplay();
-    showNotification("+1 coin!", "success");
-  });
 
   // Chat functionality
   document.getElementById("sendMessageButton")?.addEventListener("click", sendMessage);
