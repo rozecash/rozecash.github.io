@@ -12,8 +12,8 @@
             <img class="pfp" id="profilePic" src="images/default.jpg" alt="User Profile Picture" />
             <span id="username">Guest</span>
             <div id="balanceDisplay">
-                <span>Balance:</span>
                 <span id="balance">0.00</span>
+                <button id="walletBtn">Wallet</button>
             </div>
         </div>
         <nav>
@@ -31,10 +31,11 @@
 
         <div id="profilePage" class="page" style="display: none;">
             <h1>Your Profile</h1>
-            <p>Username: <span id="profileUsername"></span></p>
-            <p>Balance: <span id="profileBalance">0.00</span></p>
-            <input type="file" id="pfpUpload" accept="image/*" />
-            <button id="updatePfpBtn">Update Profile Picture</button>
+            <div class="profile-info">
+                <img class="pfp" id="profilePicLarge" src="images/default.jpg" alt="User Profile Picture" />
+                <input type="file" id="pfpUpload" accept="image/*" />
+                <button id="updatePfpBtn">Update Profile Picture</button>
+            </div>
         </div>
 
         <div id="chatArea">
