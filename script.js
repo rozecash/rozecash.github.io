@@ -206,8 +206,10 @@ function loadUserProfile() {
 
         // Update profile picture
         const profilePic = document.getElementById("profilePic");
+        const profilePicLarge = document.getElementById("profilePicLarge");
         if (data.profilePicture) {
           profilePic.src = data.profilePicture;
+          profilePicLarge.src = data.profilePicture;
         }
       }
     })
@@ -233,7 +235,9 @@ document.getElementById("pfpUpload")?.addEventListener("change", (event) => {
     .then(() => {
       // Update the profile picture on the page
       const profilePic = document.getElementById("profilePic");
+      const profilePicLarge = document.getElementById("profilePicLarge");
       profilePic.src = downloadURL;
+      profilePicLarge.src = downloadURL;
       showNotification("Profile picture updated!", "success");
     })
     .catch((error) => {
@@ -305,6 +309,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Chat functionality
   document.getElementById("sendMessageButton")?.addEventListener("click", sendMessage);
+
+  // Wallet button
+  document.getElementById("walletBtn")?.addEventListener("click", () => {
+    showNotification("Wallet functionality coming soon!", "info");
+  });
 });
 
 // Load chat when the page loads
