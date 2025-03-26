@@ -7,10 +7,81 @@
 
 body {
   font-family: 'Segoe UI', sans-serif;
-  background: linear-gradient(145deg, #0b0f1c, #11152a);
+  background-color: #0b0f1c;
   color: #e1e1e1;
   overflow-x: hidden;
-  line-height: 1.6;
+  display: flex;
+  height: 100vh;
+}
+
+/* Sidebar Chat */
+#chatSidebar {
+  width: 320px;
+  background-color: #191d33;
+  display: flex;
+  flex-direction: column;
+  border-left: 1px solid #2b2f4a;
+  padding: 15px;
+  box-shadow: -2px 0 10px rgba(0, 0, 0, 0.3);
+}
+
+#chatMessages {
+  flex: 1;
+  overflow-y: auto;
+  margin-bottom: 10px;
+  max-height: 100%;
+  padding-right: 5px;
+}
+
+#chatMessages p {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+  padding: 6px 10px;
+  background-color: #2b2f4a;
+  border-radius: 6px;
+  word-wrap: break-word;
+  animation: fadeInUp 0.3s ease;
+}
+
+#chatMessages img {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+#chatInput {
+  padding: 10px;
+  border: none;
+  border-radius: 8px;
+  outline: none;
+  width: calc(100% - 80px);
+  margin-right: 10px;
+  background-color: #2f3658;
+  color: #fff;
+}
+
+#sendChatBtn {
+  padding: 10px;
+  background-color: #6c63ff;
+  border: none;
+  color: #fff;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+#chatControls {
+  display: flex;
+  align-items: center;
+}
+
+/* Main content wrapper */
+#mainContent {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 
 /* Header */
@@ -19,278 +90,86 @@ header {
   justify-content: space-between;
   align-items: center;
   padding: 15px 30px;
-  background: rgba(22, 27, 47, 0.95);
+  background-color: #161b2f;
   border-bottom: 1px solid #2b2f4a;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-  backdrop-filter: blur(8px);
 }
 
-.user-info {
+/* Game menu */
+#gameMenu {
   display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.pfp {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 2px solid #6c63ff;
-  box-shadow: 0 0 10px #6c63ff80;
-}
-
-#balanceDisplay {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  background: rgba(39, 45, 74, 0.85);
-  padding: 8px 16px;
-  border-radius: 12px;
-  box-shadow: inset 0 0 8px #6c63ff40;
-}
-
-#balanceDisplay span {
-  font-weight: bold;
-  color: #ffffff;
-}
-
-#staticImage {
-  width: 24px;
-  height: 24px;
-  margin-left: 8px;
-}
-
-/* Wallet button */
-#walletBtn {
-  padding: 6px 16px;
-  background: #6c63ff;
-  border: none;
-  color: white;
-  border-radius: 10px;
-  cursor: pointer;
-  font-weight: bold;
-  transition: all 0.25s ease;
-  box-shadow: 0 0 10px #6c63ff60;
-}
-#walletBtn:hover {
-  background: #817aff;
-  box-shadow: 0 0 15px #817aff;
-}
-
-/* Navigation */
-nav {
-  display: flex;
-  justify-content: center;
   gap: 15px;
-  padding: 12px 0;
-  background: rgba(28, 34, 56, 0.95);
+  background-color: #1c2238;
+  padding: 12px 30px;
   border-bottom: 1px solid #2b2f4a;
 }
 
-nav button {
-  background: linear-gradient(135deg, #2b2f4a, #1c2238);
+#gameMenu button {
+  background: #272d4a;
   border: none;
   padding: 10px 20px;
-  border-radius: 12px;
+  border-radius: 10px;
   color: #fff;
   cursor: pointer;
-  transition: 0.2s ease;
-  font-weight: bold;
-  box-shadow: 0 0 8px #000;
-}
-nav button:hover {
-  background: #6c63ff;
-  box-shadow: 0 0 12px #6c63ffaa;
+  transition: background 0.2s ease, box-shadow 0.3s ease;
+  box-shadow: 0 0 5px transparent;
 }
 
-/* Main layout */
-main {
+#gameMenu button:hover {
+  background: #6c63ff;
+  box-shadow: 0 0 10px #6c63ff;
+}
+
+/* Coinflip UI */
+#coinflipGame {
   display: flex;
   flex-direction: column;
+  align-items: center;
+  justify-content: center;
   padding: 30px;
-  gap: 24px;
-}
-
-/* Pages */
-.page {
-  display: none;
-}
-.page.active {
-  display: block;
+  gap: 20px;
   animation: fadeIn 0.5s ease;
 }
 
-/* Profile */
-.profile-info {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 14px;
+#coinflipGame h2 {
+  font-size: 2rem;
+  color: #6c63ff;
 }
 
-#profilePicLarge {
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 2px solid #6c63ff;
-  box-shadow: 0 0 15px #6c63ff60;
-}
-
-#updatePfpBtn {
-  padding: 8px 16px;
+#coinflipGame button {
+  padding: 12px 24px;
   background-color: #6c63ff;
   border: none;
-  color: white;
   border-radius: 10px;
-  cursor: pointer;
-  font-weight: bold;
-  transition: all 0.2s ease;
-}
-#updatePfpBtn:hover {
-  background: #817aff;
-}
-
-/* Chat */
-#chatArea {
-  background: rgba(25, 29, 51, 0.95);
-  border-radius: 12px;
-  padding: 20px;
-  max-height: 450px;
-  overflow: hidden;
-  box-shadow: 0 0 15px #1f233850;
-  backdrop-filter: blur(6px);
-}
-
-#chatMessages {
-  flex: 1;
-  overflow-y: auto;
-  margin-bottom: 12px;
-  padding-right: 5px;
-  max-height: 350px;
-  scrollbar-width: thin;
-}
-
-#chatMessages p {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 10px;
-  padding: 10px 14px;
-  background: #2b2f4a;
-  border-radius: 8px;
-  word-wrap: break-word;
-  animation: fadeInUp 0.3s ease;
-  box-shadow: 0 0 10px #0003;
-}
-
-#chatMessages img {
-  width: 26px;
-  height: 26px;
-  border-radius: 50%;
-  object-fit: cover;
-}
-
-#chatInput {
-  padding: 12px;
-  border: none;
-  border-radius: 10px;
-  outline: none;
-  width: calc(100% - 90px);
-  background: #2f3658;
-  color: white;
-}
-
-#chatArea button {
-  padding: 10px 16px;
-  background-color: #6c63ff;
-  border: none;
-  color: white;
-  border-radius: 10px;
-  cursor: pointer;
-  font-weight: bold;
-  transition: all 0.2s ease;
-}
-#chatArea button:hover {
-  background-color: #817aff;
-}
-
-/* Auth box */
-#authBox {
-  max-width: 420px;
-  margin: 80px auto;
-  padding: 40px 30px;
-  background: rgba(28, 34, 56, 0.95);
-  border-radius: 14px;
-  box-shadow: 0 0 30px rgba(108, 99, 255, 0.3);
-  text-align: center;
-  backdrop-filter: blur(6px);
-}
-
-#authBox input {
-  width: 100%;
-  padding: 14px;
-  margin: 12px 0;
-  border: none;
-  border-radius: 10px;
-  background: #2f3658;
   color: white;
   font-size: 1rem;
-}
-
-#authBox button {
-  width: 48%;
-  margin: 8px 1%;
-  padding: 12px;
-  border: none;
-  background-color: #6c63ff;
-  color: white;
-  border-radius: 10px;
-  font-weight: bold;
   cursor: pointer;
-  transition: all 0.2s ease;
-}
-#authBox button:hover {
-  background-color: #817aff;
+  box-shadow: 0 0 10px #6c63ff;
+  transition: transform 0.2s ease;
 }
 
-/* Footer */
-footer {
-  text-align: center;
-  padding: 20px;
-  background: #161b2f;
-  color: #aaa;
-  font-size: 0.9rem;
-  border-top: 1px solid #2b2f4a;
+#coinflipGame button:hover {
+  transform: scale(1.05);
 }
-
-/* Notifications */
-#notification {
-  display: none;
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  padding: 12px 24px;
-  border-radius: 8px;
-  color: white;
-  font-weight: bold;
-  z-index: 1000;
-  background-color: #6c63ff;
-  box-shadow: 0 0 10px #6c63ff80;
-}
-
-.notification.info { background-color: #6c63ff; }
-.notification.success { background-color: #4caf50; }
-.notification.error { background-color: #f44336; }
 
 /* Animations */
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @keyframes fadeInUp {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
